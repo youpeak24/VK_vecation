@@ -11,7 +11,7 @@ export interface SEOHeadProps {
   noIndex?: boolean;
 }
 
-const DOMAIN = 'https://vkvacations.in';
+const DOMAIN = 'https://www.vkvacations.in';
 const DEFAULT_IMAGE = `${DOMAIN}/android-chrome-512x512.png`;
 
 /**

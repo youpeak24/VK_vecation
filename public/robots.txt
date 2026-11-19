@@ -1,4 +1,4 @@
-# robots.txt for https://vkvacations.in
+# robots.txt for https://www.vkvacations.in
 # https://www.robotstxt.org/
 
 User-agent: *
@@ -7,5 +7,5 @@ Allow: /
 # Private admin console (not for search engines)
 Disallow: /admin
 
-# Sitemap index (lists all child sitemaps)
-Sitemap: https://vkvacations.in/sitemap.xml
+# XML sitemap
+Sitemap: https://www.vkvacations.in/sitemap.xml

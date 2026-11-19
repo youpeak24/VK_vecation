@@ -573,8 +573,8 @@ const SEED_SEO: SEOMetadata[] = [
     metaDescription: "Book luxury international tour packages, domestic India holidays, honeymoon getaways & sacred South Indian temple circuits with VK Vacations.",
     keywords: ["VK Vacations", "luxury travel India", "holiday packages Chennai", "international tour packages", "honeymoon packages", "South Indian temple tours", "Maldives packages", "Swiss tours"],
     metaKeywords: "VK Vacations, luxury travel India, holiday packages Chennai, international tour packages, honeymoon packages, South Indian temple tours",
-    ogImage: "https://vkvacations.in/android-chrome-512x512.png",
-    canonicalUrl: "https://vkvacations.in/"
+    ogImage: "https://www.vkvacations.in/android-chrome-512x512.png",
+    canonicalUrl: "https://www.vkvacations.in/"
   },
   {
     id: "seo-packages",
@@ -586,8 +586,8 @@ const SEED_SEO: SEOMetadata[] = [
     metaDescription: "Explore our curated catalog of luxury domestic and international holiday packages with transparent pricing and bespoke itineraries.",
     keywords: ["holiday packages", "tour packages from Chennai", "domestic holiday deals", "international tours India", "family vacation packages"],
     metaKeywords: "holiday packages, tour packages from Chennai, domestic holiday deals, international tours India",
-    ogImage: "https://vkvacations.in/android-chrome-512x512.png",
-    canonicalUrl: "https://vkvacations.in/packages"
+    ogImage: "https://www.vkvacations.in/android-chrome-512x512.png",
+    canonicalUrl: "https://www.vkvacations.in/packages"
   },
   {
     id: "seo-temple",
@@ -600,7 +600,7 @@ const SEED_SEO: SEOMetadata[] = [
     keywords: ["temple tours South India", "arupadai veedu tour package", "navagraha temple circuit", "pancha bhoota stalam", "rameshwaram yatra", "spiritual tours Chennai"],
     metaKeywords: "temple tours South India, arupadai veedu tour package, navagraha temple circuit, rameshwaram yatra",
     ogImage: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1200&q=80",
-    canonicalUrl: "https://vkvacations.in/temple-tours"
+    canonicalUrl: "https://www.vkvacations.in/temple-tours"
   },
   {
     id: "seo-india",
@@ -613,7 +613,7 @@ const SEED_SEO: SEOMetadata[] = [
     keywords: ["India tour packages", "Kashmir holiday", "Kerala backwaters tour", "Rajasthan forts tour", "Andaman honeymoon package"],
     metaKeywords: "India tour packages, Kashmir holiday, Kerala backwaters tour, Rajasthan forts tour, Andaman honeymoon package",
     ogImage: "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&w=1200&q=80",
-    canonicalUrl: "https://vkvacations.in/india-tours"
+    canonicalUrl: "https://www.vkvacations.in/india-tours"
   },
   {
     id: "seo-intl",
@@ -626,7 +626,7 @@ const SEED_SEO: SEOMetadata[] = [
     keywords: ["international holiday packages", "Dubai tour package from India", "Maldives water villa", "Switzerland Paris tour", "Bali holiday package"],
     metaKeywords: "international holiday packages, Dubai tour package from India, Maldives water villa, Switzerland Paris tour, Bali holiday package",
     ogImage: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80",
-    canonicalUrl: "https://vkvacations.in/international-tours"
+    canonicalUrl: "https://www.vkvacations.in/international-tours"
   },
   {
     id: "seo-honeymoon",
@@ -639,7 +639,7 @@ const SEED_SEO: SEOMetadata[] = [
     keywords: ["honeymoon packages", "Maldives honeymoon", "Bali romantic getaway", "luxury honeymoon tours", "couple vacation packages"],
     metaKeywords: "honeymoon packages, Maldives honeymoon, Bali romantic getaway, luxury honeymoon tours",
     ogImage: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=1200&q=80",
-    canonicalUrl: "https://vkvacations.in/honeymoon"
+    canonicalUrl: "https://www.vkvacations.in/honeymoon"
   },
   {
     id: "seo-contact",
@@ -651,8 +651,8 @@ const SEED_SEO: SEOMetadata[] = [
     metaDescription: "Get in touch with VK Vacations holiday specialists. Call +91 9384957775 or visit our Cathedral Road, Chennai office.",
     keywords: ["VK Vacations contact", "travel agency Cathedral Road Chennai", "tour operator phone number Chennai", "holiday consultant"],
     metaKeywords: "VK Vacations contact, travel agency Cathedral Road Chennai, tour operator phone number Chennai",
-    ogImage: "https://vkvacations.in/android-chrome-512x512.png",
-    canonicalUrl: "https://vkvacations.in/contact"
+    ogImage: "https://www.vkvacations.in/android-chrome-512x512.png",
+    canonicalUrl: "https://www.vkvacations.in/contact"
   }
 ];
 

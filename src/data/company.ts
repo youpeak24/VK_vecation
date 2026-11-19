@@ -47,7 +47,7 @@ export const COMPANY: CompanyConfig = {
   altPhone: "+91 93849 57775",
   email: "travel@vkvacations.in",
   supportEmail: "support@vkvacations.in",
-  websiteUrl: "https://vkvacations.in",
+  websiteUrl: "https://www.vkvacations.in",
   domain: "vkvacations.in",
   whatsappNumber: "919384957775",
   displayWhatsapp: "+91 9384957775",

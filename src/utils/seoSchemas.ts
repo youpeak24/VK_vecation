@@ -1,4 +1,4 @@
-const DOMAIN = 'https://vkvacations.in';
+const DOMAIN = 'https://www.vkvacations.in';
 
 /**
  * Builds standard Google BreadcrumbList schema
