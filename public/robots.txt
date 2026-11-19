@@ -1,72 +1,11 @@
-# ==============================================================================
-# VK Vacations (vkvacations.in) — Production Robots.txt
-# Enterprise Search Engine Optimization Directives
-# ==============================================================================
+# robots.txt for https://vkvacations.in
+# https://www.robotstxt.org/
 
 User-agent: *
 Allow: /
-Allow: /assets/
-Allow: /packages
-Allow: /packages/*
-Allow: /temple-tours
-Allow: /temple-tours/*
-Allow: /india-tours
-Allow: /international-tours
-Allow: /destinations
-Allow: /destinations/*
-Allow: /honeymoon
-Allow: /group-tours
-Allow: /blog
-Allow: /blog/*
-Allow: /about
-Allow: /contact
-Allow: /privacy-policy
-Allow: /terms
-Allow: /refund-policy
-Allow: /android-chrome-192x192.png
-Allow: /android-chrome-512x512.png
-Allow: /apple-touch-icon.png
-Allow: /favicon-32x32.png
-Allow: /favicon-16x16.png
-Allow: /favicon.ico
-Allow: /hero.png
-Allow: /site.webmanifest
-Allow: /sitemap.xml
 
-# Protect Private & Administrative Consoles
+# Private admin console (not for search engines)
 Disallow: /admin
-Disallow: /admin/
-Disallow: /admin/*
 
-# Googlebot Specific Rules
-User-agent: Googlebot
-Allow: /
-Disallow: /admin/
-Disallow: /admin/*
-
-# Googlebot Image Crawler
-User-agent: Googlebot-Image
-Allow: /
-Allow: /assets/
-Allow: /hero.png
-Allow: /*.png$
-Allow: /*.jpg$
-Allow: /*.jpeg$
-Allow: /*.webp$
-Allow: /*.svg$
-
-# Bingbot Specific Rules
-User-agent: Bingbot
-Allow: /
-Disallow: /admin/
-Disallow: /admin/*
-
-# Apple Search Crawler
-User-agent: Applebot
-Allow: /
-Disallow: /admin/
-Disallow: /admin/*
-
-# XML Sitemaps Index & Host
-Host: https://vkvacations.in
+# Sitemap index (lists all child sitemaps)
 Sitemap: https://vkvacations.in/sitemap.xml

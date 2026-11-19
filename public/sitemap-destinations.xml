@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <url>
+    <loc>https://vkvacations.in/destinations/maldives</loc>
+    <lastmod>2026-11-19</lastmod>
+  </url>
+
+  <url>
+    <loc>https://vkvacations.in/destinations/switzerland</loc>
+    <lastmod>2026-11-19</lastmod>
+  </url>
+
+  <url>
+    <loc>https://vkvacations.in/destinations/bali</loc>
+    <lastmod>2026-11-19</lastmod>
+  </url>
+
+  <url>
+    <loc>https://vkvacations.in/destinations/dubai</loc>
+    <lastmod>2026-11-19</lastmod>
+  </url>
+
+  <url>
+    <loc>https://vkvacations.in/destinations/kashmir</loc>
+    <lastmod>2026-11-19</lastmod>
+  </url>
+
+  <url>
+    <loc>https://vkvacations.in/destinations/kerala</loc>
+    <lastmod>2026-11-19</lastmod>
+  </url>
+
+  <url>
+    <loc>https://vkvacations.in/destinations/singapore</loc>
+    <lastmod>2026-11-19</lastmod>
+  </url>
+
+  <url>
+    <loc>https://vkvacations.in/destinations/rajasthan</loc>
+    <lastmod>2026-11-19</lastmod>
+  </url>
+
+</urlset>

@@ -62,6 +62,14 @@ export const Header: React.FC = () => {
   // Determine whether header is in transparent hero mode or sticky solid mode
   const isSolid = isScrolled || !isHome;
 
+  // Shared nav link styling: single line, compact on xl, roomier on 2xl
+  const navBase =
+    'whitespace-nowrap text-[11px] 2xl:text-xs font-heading font-bold uppercase tracking-wide 2xl:tracking-wider transition-colors';
+  const navLinkClass = ({ isActive }: { isActive: boolean }) =>
+    `${navBase} hover:text-[#0866D9] ${
+      isActive ? 'text-[#0866D9]' : isSolid ? 'text-[#142238]' : 'text-white'
+    }`;
+
   return (
     <header className="fixed top-0 left-0 right-0 z-40 transition-all duration-300">
       {/* Top Contact Bar */}
@@ -75,12 +83,12 @@ export const Header: React.FC = () => {
             : 'bg-gradient-to-b from-[#071B35]/80 via-[#071B35]/40 to-transparent border-transparent py-4 text-white'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 xl:px-4 2xl:px-6 flex items-center justify-between gap-4">
           
           {/* Brand Logo */}
           <Link 
             to="/" 
-            className="flex items-center gap-2.5 group focus:outline-none"
+            className="flex items-center gap-2.5 group focus:outline-none shrink-0"
             aria-label="VK Vacations Home"
           >
             <div className="w-10 h-10 rounded-xl bg-white p-0.5 shadow-md group-hover:scale-105 transition-transform overflow-hidden border border-slate-200/50 flex items-center justify-center shrink-0">
@@ -90,28 +98,20 @@ export const Header: React.FC = () => {
                 className="w-full h-full object-contain rounded-lg"
               />
             </div>
-            <div>
-              <span className={`font-heading font-extrabold text-xl tracking-tight leading-none block ${isSolid ? 'text-[#071B35]' : 'text-white'}`}>
+            <div className="whitespace-nowrap">
+              <span className={`font-heading font-extrabold text-lg 2xl:text-xl tracking-tight leading-none block ${isSolid ? 'text-[#071B35]' : 'text-white'}`}>
                 VK <span className="text-[#0866D9]">VACATIONS</span>
               </span>
-              <span className="text-[10px] font-medium tracking-widest uppercase block text-[#00B8A9] mt-0.5">
+              {/* Tagline hidden on the tight xl range so the nav stays on one line */}
+              <span className="text-[9px] sm:text-[10px] font-medium tracking-widest uppercase block xl:hidden 2xl:block text-[#00B8A9] mt-1 leading-none">
                 Explore More. Experience Beyond.
               </span>
             </div>
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden xl:flex items-center gap-6">
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `text-xs font-heading font-bold uppercase tracking-wider transition-colors hover:text-[#0866D9] ${
-                  isActive ? 'text-[#0866D9]' : isSolid ? 'text-[#142238]' : 'text-white'
-                }`
-              }
-            >
-              Home
-            </NavLink>
+          <nav className="hidden xl:flex items-center gap-3 2xl:gap-7 min-w-0">
+            <NavLink to="/" end className={navLinkClass}>Home</NavLink>
 
             {/* Mega Menu Trigger for Tour Packages */}
             <div ref={megaMenuRef} className="relative">
@@ -119,7 +119,7 @@ export const Header: React.FC = () => {
                 type="button"
                 onClick={() => setIsMegaMenuOpen(!isMegaMenuOpen)}
                 onMouseEnter={() => setIsMegaMenuOpen(true)}
-                className={`text-xs font-heading font-bold uppercase tracking-wider flex items-center gap-1 transition-colors hover:text-[#0866D9] py-2 cursor-pointer ${
+                className={`${navBase} flex items-center gap-1 hover:text-[#0866D9] py-2 cursor-pointer ${
                   isMegaMenuOpen ? 'text-[#0866D9]' : isSolid ? 'text-[#142238]' : 'text-white'
                 }`}
                 aria-expanded={isMegaMenuOpen}
@@ -132,114 +132,36 @@ export const Header: React.FC = () => {
               </button>
             </div>
 
-            <NavLink
-              to="/india-tours"
-              className={({ isActive }) =>
-                `text-xs font-heading font-bold uppercase tracking-wider transition-colors hover:text-[#0866D9] ${
-                  isActive ? 'text-[#0866D9]' : isSolid ? 'text-[#142238]' : 'text-white'
-                }`
-              }
-            >
-              India Tours
-            </NavLink>
+            <NavLink to="/india-tours" className={navLinkClass}>India Tours</NavLink>
 
             <NavLink
               to="/temple-tours"
               className={({ isActive }) =>
-                `text-xs font-heading font-bold uppercase tracking-wider transition-colors hover:text-amber-500 flex items-center gap-1 ${
+                `${navBase} hover:text-amber-500 flex items-center gap-1.5 ${
                   isActive ? 'text-amber-500' : isSolid ? 'text-[#142238]' : 'text-white'
                 }`
               }
             >
               <span>Temple Tours</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse shrink-0" />
             </NavLink>
 
-            <NavLink
-              to="/international-tours"
-              className={({ isActive }) =>
-                `text-xs font-heading font-bold uppercase tracking-wider transition-colors hover:text-[#0866D9] ${
-                  isActive ? 'text-[#0866D9]' : isSolid ? 'text-[#142238]' : 'text-white'
-                }`
-              }
-            >
-              International
-            </NavLink>
-
-            <NavLink
-              to="/honeymoon"
-              className={({ isActive }) =>
-                `text-xs font-heading font-bold uppercase tracking-wider transition-colors hover:text-[#0866D9] ${
-                  isActive ? 'text-[#0866D9]' : isSolid ? 'text-[#142238]' : 'text-white'
-                }`
-              }
-            >
-              Honeymoon
-            </NavLink>
-
-            <NavLink
-              to="/group-tours"
-              className={({ isActive }) =>
-                `text-xs font-heading font-bold uppercase tracking-wider transition-colors hover:text-[#0866D9] ${
-                  isActive ? 'text-[#0866D9]' : isSolid ? 'text-[#142238]' : 'text-white'
-                }`
-              }
-            >
-              Group Tours
-            </NavLink>
-
-            <NavLink
-              to="/destinations"
-              className={({ isActive }) =>
-                `text-xs font-heading font-bold uppercase tracking-wider transition-colors hover:text-[#0866D9] ${
-                  isActive ? 'text-[#0866D9]' : isSolid ? 'text-[#142238]' : 'text-white'
-                }`
-              }
-            >
-              Destinations
-            </NavLink>
-
-            <NavLink
-              to="/about"
-              className={({ isActive }) =>
-                `text-xs font-heading font-bold uppercase tracking-wider transition-colors hover:text-[#0866D9] ${
-                  isActive ? 'text-[#0866D9]' : isSolid ? 'text-[#142238]' : 'text-white'
-                }`
-              }
-            >
-              About Us
-            </NavLink>
-
-            <NavLink
-              to="/blog"
-              className={({ isActive }) =>
-                `text-xs font-heading font-bold uppercase tracking-wider transition-colors hover:text-[#0866D9] ${
-                  isActive ? 'text-[#0866D9]' : isSolid ? 'text-[#142238]' : 'text-white'
-                }`
-              }
-            >
-              Blog
-            </NavLink>
-
-            <NavLink
-              to="/contact"
-              className={({ isActive }) =>
-                `text-xs font-heading font-bold uppercase tracking-wider transition-colors hover:text-[#0866D9] ${
-                  isActive ? 'text-[#0866D9]' : isSolid ? 'text-[#142238]' : 'text-white'
-                }`
-              }
-            >
-              Contact
-            </NavLink>
+            <NavLink to="/international-tours" className={navLinkClass}>International</NavLink>
+            <NavLink to="/honeymoon" className={navLinkClass}>Honeymoon</NavLink>
+            <NavLink to="/group-tours" className={navLinkClass}>Group Tours</NavLink>
+            <NavLink to="/destinations" className={navLinkClass}>Destinations</NavLink>
+            <NavLink to="/about" className={navLinkClass}>About</NavLink>
+            <NavLink to="/blog" className={navLinkClass}>Blog</NavLink>
+            <NavLink to="/contact" className={navLinkClass}>Contact</NavLink>
           </nav>
 
           {/* Right Action Button & Mobile Hamburger */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 shrink-0">
             <button
               onClick={() => openInquiryModal()}
-              className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-heading font-bold text-xs uppercase tracking-wider text-white bg-[#FF8A38] hover:bg-[#e06c1d] shadow-md shadow-orange-500/25 transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
+              className="hidden sm:inline-flex items-center justify-center gap-2 whitespace-nowrap px-4 2xl:px-5 py-2.5 rounded-full font-heading font-bold text-[11px] 2xl:text-xs uppercase tracking-wider text-white bg-[#FF8A38] hover:bg-[#e06c1d] shadow-md shadow-orange-500/25 transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
             >
-              <Sparkles size={14} />
+              <Sparkles size={14} className="shrink-0 xl:hidden 2xl:block" />
               <span>Plan My Trip</span>
             </button>
 
