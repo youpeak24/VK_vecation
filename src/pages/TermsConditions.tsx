@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { COMPANY } from '../data/company';
+import { SEOHead } from '../components/seo/SEOHead';
 
 export const TermsConditions: React.FC = () => {
   useEffect(() => {
@@ -10,6 +11,11 @@ export const TermsConditions: React.FC = () => {
 
   return (
     <div className="pt-28 pb-24 bg-[#F8FAFC]">
+      <SEOHead
+        title="Terms & Conditions | VK Vacations India"
+        description="Official customer terms and conditions for holiday package bookings, travel documentation, airline schedules and payment commitments with VK Vacations."
+        canonical="/terms"
+      />
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         
         <Link to="/" className="inline-flex items-center gap-1.5 text-xs text-[#0866D9] font-semibold mb-6 hover:underline">

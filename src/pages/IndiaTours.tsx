@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Sparkles } from 'lucide-react';
 import { TOUR_PACKAGES } from '../data/packages';
 import { PackageCard } from '../components/packages/PackageCard';
+import { SEOHead } from '../components/seo/SEOHead';
+import { buildBreadcrumbSchema } from '../utils/seoSchemas';
 import type { IndiaRegion } from '../types';
 
 export const IndiaTours: React.FC = () => {
@@ -28,6 +30,17 @@ export const IndiaTours: React.FC = () => {
 
   return (
     <div className="pt-28 pb-24 bg-[#F8FAFC]">
+      <SEOHead
+        title="Incredible India Tour Packages — Kashmir, Kerala, Rajasthan & Andaman | VK Vacations"
+        description="Discover the magic of India with curated domestic tour packages across Kashmir houseboats, Kerala backwaters, royal Rajasthan palaces, and exotic Andaman beaches."
+        keywords={["India tour packages", "Kashmir holiday", "Kerala tour package", "Rajasthan heritage tour", "Andaman islands package", "domestic holidays Chennai"]}
+        canonical="/india-tours"
+        ogImage="https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&w=1200&q=80"
+        schema={buildBreadcrumbSchema([
+          { name: "Home", url: "/" },
+          { name: "India Tours", url: "/india-tours" }
+        ])}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         
         {/* Page Banner */}

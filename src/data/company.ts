@@ -8,6 +8,8 @@ export interface CompanyConfig {
   altPhone: string;
   email: string;
   supportEmail: string;
+  websiteUrl: string;
+  domain: string;
   whatsappNumber: string; // international digits for wa.me link
   displayWhatsapp: string;
   address: {
@@ -43,8 +45,10 @@ export const COMPANY: CompanyConfig = {
   heroSubtitle: "Unforgettable journeys, breathtaking destinations, and holidays crafted around you.",
   phone: "+91 9384957775",
   altPhone: "+91 93849 57775",
-  email: "travel@vkvacations.com",
-  supportEmail: "support@vkvacations.com",
+  email: "travel@vkvacations.in",
+  supportEmail: "support@vkvacations.in",
+  websiteUrl: "https://vkvacations.in",
+  domain: "vkvacations.in",
   whatsappNumber: "919384957775",
   displayWhatsapp: "+91 9384957775",
   address: {

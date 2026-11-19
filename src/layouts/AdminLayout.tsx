@@ -3,12 +3,18 @@ import { Outlet } from 'react-router-dom';
 import { Sidebar } from '../components/admin/Sidebar';
 import { Topbar } from '../components/admin/Topbar';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
+import { SEOHead } from '../components/seo/SEOHead';
 
 export const AdminLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] flex text-[#142238] font-sans antialiased">
+      <SEOHead
+        title="Admin Console & Travel ERP | VK Vacations"
+        description="Secure Administrative Management Console"
+        noIndex
+      />
       {/* Admin Collapsible / Static Sidebar */}
       <Sidebar 
         isOpen={sidebarOpen} 

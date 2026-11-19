@@ -13,6 +13,8 @@ import { DESTINATIONS } from '../data/destinations';
 import { TOUR_PACKAGES } from '../data/packages';
 import { PackageCard } from '../components/packages/PackageCard';
 import { useInquiryModal } from '../context/InquiryModalContext';
+import { SEOHead } from '../components/seo/SEOHead';
+import { buildDestinationSchema, buildBreadcrumbSchema } from '../utils/seoSchemas';
 
 export const DestinationDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -44,7 +46,21 @@ export const DestinationDetail: React.FC = () => {
 
   return (
     <div className="pt-24 pb-20 bg-[#F8FAFC]">
-      
+      <SEOHead
+        title={`${dest.name} Travel Guide & Tour Packages | VK Vacations`}
+        description={dest.overview || dest.tagline || `Discover ${dest.name}: best time to visit, top attractions, climate, visa rules and luxury holiday packages by VK Vacations.`}
+        keywords={[dest.name, dest.country, "travel guide", "best time to visit", "tour packages", "VK Vacations"]}
+        canonical={`/destinations/${dest.slug}`}
+        ogImage={dest.heroImage}
+        schema={[
+          buildDestinationSchema(dest, `/destinations/${dest.slug}`),
+          buildBreadcrumbSchema([
+            { name: "Home", url: "/" },
+            { name: "Destinations", url: "/destinations" },
+            { name: dest.name, url: `/destinations/${dest.slug}` }
+          ])
+        ]}
+      />
       {/* Breadcrumb */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
         <div className="flex items-center gap-2 text-xs text-[#64748B]">

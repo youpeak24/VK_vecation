@@ -5,6 +5,8 @@ import { api } from '../services/api';
 import { TemplePackage } from '../types';
 import { formatCurrency } from '../utils/formatters';
 import { useInquiryModal } from '../context/InquiryModalContext';
+import { SEOHead } from '../components/seo/SEOHead';
+import { buildBreadcrumbSchema } from '../utils/seoSchemas';
 
 export const TempleTours: React.FC = () => {
   const [templePackages, setTemplePackages] = useState<TemplePackage[]>([]);
@@ -36,6 +38,16 @@ export const TempleTours: React.FC = () => {
 
   return (
     <div className="pt-28 pb-24 bg-[#F8FAFC]">
+      <SEOHead
+        title="South Indian Temple Tours & Spiritual Pilgrimage Packages | VK Vacations"
+        description="Experience divine bliss with VK Vacations sacred pilgrimage circuits: Arupadai Veedu Murugan temples, Navagraha Kumbakonam, Pancha Bhoota Stalam, Rameshwaram with VIP Darshan & Satvik dining."
+        keywords={["South Indian temple tours", "Arupadai Veedu tour package", "Navagraha temple tour Kumbakonam", "Pancha Bhoota Stalam", "Rameshwaram yatra", "temple packages Chennai"]}
+        canonical="/temple-tours"
+        schema={buildBreadcrumbSchema([
+          { name: "Home", url: "/" },
+          { name: "Temple Tours", url: "/temple-tours" }
+        ])}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         
         {/* Page Banner */}

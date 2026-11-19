@@ -12,6 +12,8 @@ import {
 import { COMPANY } from '../data/company';
 import { generateWhatsAppLink } from '../utils/formatters';
 import { inquiryService } from '../services/inquiryService';
+import { SEOHead } from '../components/seo/SEOHead';
+import { buildBreadcrumbSchema } from '../utils/seoSchemas';
 
 export const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -74,6 +76,17 @@ export const Contact: React.FC = () => {
 
   return (
     <div className="pt-28 pb-24 bg-[#F8FAFC]">
+      <SEOHead
+        title="Contact VK Vacations — Chennai Travel Desk, Phone & Head Office"
+        description="Contact VK Vacations travel consultants. Call +91 9384957775, chat on WhatsApp or visit our Cathedral Road, Chennai office for customized international and domestic vacation planning."
+        keywords={["Contact VK Vacations", "VK Vacations phone number", "travel agency Chennai address", "holiday consultant Cathedral Road", "tour operator contact"]}
+        canonical="/contact"
+        ogImage="/android-chrome-512x512.png"
+        schema={buildBreadcrumbSchema([
+          { name: "Home", url: "/" },
+          { name: "Contact Us", url: "/contact" }
+        ])}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-16">
         
         {/* Page Banner */}

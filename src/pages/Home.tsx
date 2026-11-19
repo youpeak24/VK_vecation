@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { SEOHead } from '../components/seo/SEOHead';
 import { HeroSection } from '../components/home/HeroSection';
 import { PopularCategories } from '../components/home/PopularCategories';
 import { AboutSection } from '../components/home/AboutSection';
@@ -22,6 +23,13 @@ export const Home: React.FC = () => {
 
   return (
     <div className="overflow-hidden">
+      <SEOHead
+        title="VK Vacations | Explore More. Experience Beyond. — Premium Holiday Packages & Temple Tours"
+        description="South India's premier luxury travel agency. Handcrafted international tours, domestic holidays, honeymoon water villas, and sacred South Indian temple circuits with VIP Darshan & 24/7 concierge support."
+        keywords={["VK Vacations", "luxury travel agency Chennai", "holiday packages India", "South Indian temple tours", "Arupadai Veedu tour", "Maldives honeymoon packages", "Dubai tour packages", "Switzerland Paris tour", "Kerala houseboat packages", "Kashmir holiday packages"]}
+        canonical="/"
+        ogImage="/android-chrome-512x512.png"
+      />
       {/* 1. Immersive Hero Slider & Search */}
       <HeroSection />
 

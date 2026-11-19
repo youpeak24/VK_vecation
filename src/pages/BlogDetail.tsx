@@ -10,6 +10,8 @@ import {
 import { BLOG_POSTS } from '../data/blog';
 import { formatDate } from '../utils/formatters';
 import { useInquiryModal } from '../context/InquiryModalContext';
+import { SEOHead } from '../components/seo/SEOHead';
+import { buildBlogPostSchema, buildBreadcrumbSchema } from '../utils/seoSchemas';
 
 export const BlogDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -37,6 +39,22 @@ export const BlogDetail: React.FC = () => {
 
   return (
     <div className="pt-24 pb-20 bg-[#F8FAFC]">
+      <SEOHead
+        title={`${post.title} | VK Vacations Journal`}
+        description={post.summary}
+        keywords={[post.title, post.category, post.author.name, ...post.tags, "travel guide", "VK Vacations blog"]}
+        canonical={`/blog/${post.slug}`}
+        ogImage={post.coverImage}
+        ogType="article"
+        schema={[
+          buildBlogPostSchema(post, `/blog/${post.slug}`),
+          buildBreadcrumbSchema([
+            { name: "Home", url: "/" },
+            { name: "Blog", url: "/blog" },
+            { name: post.title, url: `/blog/${post.slug}` }
+          ])
+        ]}
+      />
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         
         {/* Navigation & Back Link */}

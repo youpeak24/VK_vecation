@@ -7,6 +7,8 @@ import {
 import { COMPANY } from '../data/company';
 import { CounterNumber } from '../components/animations/CounterNumber';
 import { Link } from 'react-router-dom';
+import { SEOHead } from '../components/seo/SEOHead';
+import { buildBreadcrumbSchema } from '../utils/seoSchemas';
 
 export const About: React.FC = () => {
   useEffect(() => {
@@ -36,6 +38,17 @@ export const About: React.FC = () => {
 
   return (
     <div className="pt-28 pb-24 bg-[#F8FAFC]">
+      <SEOHead
+        title="About VK Vacations — South India's Premier Luxury Travel Agency | Chennai"
+        description="Learn about VK Vacations, our 18+ years of travel industry leadership, dedicated holiday consultants, mission, and why 28,500+ happy travelers trust us for bespoke holidays."
+        keywords={["About VK Vacations", "luxury tour operator Chennai", "VK Vacations team", "best travel agency Tamil Nadu", "registered tour company India"]}
+        canonical="/about"
+        ogImage="/android-chrome-512x512.png"
+        schema={buildBreadcrumbSchema([
+          { name: "Home", url: "/" },
+          { name: "About Us", url: "/about" }
+        ])}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-20">
         
         {/* Hero Narrative */}

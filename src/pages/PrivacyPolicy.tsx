@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { COMPANY } from '../data/company';
+import { SEOHead } from '../components/seo/SEOHead';
 
 export const PrivacyPolicy: React.FC = () => {
   useEffect(() => {
@@ -10,6 +11,11 @@ export const PrivacyPolicy: React.FC = () => {
 
   return (
     <div className="pt-28 pb-24 bg-[#F8FAFC]">
+      <SEOHead
+        title="Privacy Policy | VK Vacations India"
+        description="Read the official Privacy Policy of VK Vacations. Transparent terms on customer data protection, encryption, cookies and booking details."
+        canonical="/privacy-policy"
+      />
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         
         <Link to="/" className="inline-flex items-center gap-1.5 text-xs text-[#0866D9] font-semibold mb-6 hover:underline">

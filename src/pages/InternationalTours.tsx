@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { Globe2 } from 'lucide-react';
 import { TOUR_PACKAGES } from '../data/packages';
 import { PackageCard } from '../components/packages/PackageCard';
+import { SEOHead } from '../components/seo/SEOHead';
+import { buildBreadcrumbSchema } from '../utils/seoSchemas';
 
 export const InternationalTours: React.FC = () => {
   useEffect(() => {
@@ -12,6 +14,17 @@ export const InternationalTours: React.FC = () => {
 
   return (
     <div className="pt-28 pb-24 bg-[#F8FAFC]">
+      <SEOHead
+        title="International Holiday Tour Packages — Dubai, Europe, Bali, Singapore & Maldives | VK Vacations"
+        description="Book luxury international holidays from India with VK Vacations. Complete packages for Dubai, Maldives overwater villas, Switzerland, Paris, Bali & Singapore with visa support."
+        keywords={["international tour packages", "Dubai holiday package", "Maldives vacation from Chennai", "Europe tour packages", "Bali pool villa package", "Singapore holiday"]}
+        canonical="/international-tours"
+        ogImage="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80"
+        schema={buildBreadcrumbSchema([
+          { name: "Home", url: "/" },
+          { name: "International Tours", url: "/international-tours" }
+        ])}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         
         {/* Page Banner */}

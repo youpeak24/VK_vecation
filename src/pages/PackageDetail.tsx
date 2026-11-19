@@ -21,6 +21,8 @@ import { RatingStars } from '../components/ui/RatingStars';
 import { useInquiryModal } from '../context/InquiryModalContext';
 import { PackageCard } from '../components/packages/PackageCard';
 import { packageService } from '../services/packageService';
+import { SEOHead } from '../components/seo/SEOHead';
+import { buildPackageSchema, buildBreadcrumbSchema } from '../utils/seoSchemas';
 
 export const PackageDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -59,7 +61,22 @@ export const PackageDetail: React.FC = () => {
 
   return (
     <div className="pt-24 pb-20 bg-[#F8FAFC]">
-      
+      <SEOHead
+        title={`${pkg.title} (${pkg.duration.days}D/${pkg.duration.nights}N) | VK Vacations`}
+        description={pkg.overview || pkg.subtitle || `${pkg.title} holiday package with luxury accommodation, transfers, guided tours and meals.`}
+        keywords={[pkg.title, pkg.destination, pkg.country, "holiday package", "tour package Chennai", "VK Vacations"]}
+        canonical={`/packages/${pkg.slug}`}
+        ogImage={pkg.featuredImage}
+        ogType="product"
+        schema={[
+          buildPackageSchema(pkg, `/packages/${pkg.slug}`),
+          buildBreadcrumbSchema([
+            { name: "Home", url: "/" },
+            { name: "Packages", url: "/packages" },
+            { name: pkg.title, url: `/packages/${pkg.slug}` }
+          ])
+        ]}
+      />
       {/* Breadcrumb & Navigation */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
         <div className="flex items-center justify-between text-xs text-[#64748B]">

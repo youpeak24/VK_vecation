@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { BookOpen, Calendar, Clock, ArrowRight, Search } from 'lucide-react';
 import { BLOG_POSTS } from '../data/blog';
 import { formatDate } from '../utils/formatters';
+import { SEOHead } from '../components/seo/SEOHead';
+import { buildBreadcrumbSchema } from '../utils/seoSchemas';
 
 export const Blog: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -26,6 +28,16 @@ export const Blog: React.FC = () => {
 
   return (
     <div className="pt-28 pb-24 bg-[#F8FAFC]">
+      <SEOHead
+        title="Travel Journal & Destination Guides — Travel Tips & Advice | VK Vacations"
+        description="Read expert travel articles, Dubai guidelines for Indians, best time to visit Bali, honeymoon destination trends, and international travel preparation tips by VK Vacations."
+        keywords={["travel blog India", "travel tips Dubai", "best time to visit Bali", "honeymoon destinations 2026", "VK Vacations journal"]}
+        canonical="/blog"
+        schema={buildBreadcrumbSchema([
+          { name: "Home", url: "/" },
+          { name: "Blog", url: "/blog" }
+        ])}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         
         {/* Page Banner */}

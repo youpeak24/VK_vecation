@@ -10,6 +10,8 @@ import {
 import { SCHEDULED_DEPARTURES } from '../data/departures';
 import { formatINR, formatDate } from '../utils/formatters';
 import { useInquiryModal } from '../context/InquiryModalContext';
+import { SEOHead } from '../components/seo/SEOHead';
+import { buildBreadcrumbSchema } from '../utils/seoSchemas';
 
 export const GroupTours: React.FC = () => {
   const { openInquiryModal } = useInquiryModal();
@@ -28,6 +30,17 @@ export const GroupTours: React.FC = () => {
 
   return (
     <div className="pt-28 pb-24 bg-[#F8FAFC]">
+      <SEOHead
+        title="Fixed Group Tour Departures — Escorted Family & Corporate Tours | VK Vacations"
+        description="Join scheduled fixed group tours with VK Vacations. Dedicated tour managers, South Indian meal care, AC luxury coaches, and guaranteed departure dates from Chennai & Bangalore."
+        keywords={["group tours India", "fixed departures Chennai", "escorted holiday tours", "family group vacations", "corporate travel group tours"]}
+        canonical="/group-tours"
+        ogImage="https://images.unsplash.com/photo-1539635278303-d4002c07eae3?auto=format&fit=crop&w=1200&q=80"
+        schema={buildBreadcrumbSchema([
+          { name: "Home", url: "/" },
+          { name: "Group Tours", url: "/group-tours" }
+        ])}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         
         {/* Page Banner */}

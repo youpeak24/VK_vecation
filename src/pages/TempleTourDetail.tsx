@@ -21,6 +21,8 @@ import { TemplePackage } from '../types';
 import { formatCurrency } from '../utils/formatters';
 import { useInquiryModal } from '../context/InquiryModalContext';
 import { COMPANY } from '../data/company';
+import { SEOHead } from '../components/seo/SEOHead';
+import { buildTempleTourSchema, buildBreadcrumbSchema } from '../utils/seoSchemas';
 
 export const TempleTourDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -53,6 +55,22 @@ export const TempleTourDetail: React.FC = () => {
 
   return (
     <div className="pt-28 pb-24 bg-[#F8FAFC]">
+      <SEOHead
+        title={`${pkg.title} (${pkg.duration.days}D/${pkg.duration.nights}N) | VK Vacations Temple Tours`}
+        description={pkg.overview || `${pkg.title} sacred pilgrimage package with VIP Darshan, AC transfers, verified hotel stays and pure Satvik vegetarian dining.`}
+        keywords={[pkg.title, pkg.circuit, "temple tour package", "South Indian pilgrimage", "VIP Darshan", "VK Vacations"]}
+        canonical={`/temple-tours/${pkg.slug}`}
+        ogImage={pkg.featuredImage}
+        ogType="product"
+        schema={[
+          buildTempleTourSchema(pkg, `/temple-tours/${pkg.slug}`),
+          buildBreadcrumbSchema([
+            { name: "Home", url: "/" },
+            { name: "Temple Tours", url: "/temple-tours" },
+            { name: pkg.title, url: `/temple-tours/${pkg.slug}` }
+          ])
+        ]}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
 
         {/* Back Link & Breadcrumbs */}

@@ -7,6 +7,8 @@ import {
 } from 'lucide-react';
 import { TOUR_PACKAGES } from '../data/packages';
 import { PackageCard } from '../components/packages/PackageCard';
+import { SEOHead } from '../components/seo/SEOHead';
+import { buildBreadcrumbSchema } from '../utils/seoSchemas';
 import type { TourPackage } from '../types';
 
 export const Packages: React.FC = () => {
@@ -78,6 +80,16 @@ export const Packages: React.FC = () => {
 
   return (
     <div className="pt-28 pb-24 bg-[#F8FAFC]">
+      <SEOHead
+        title="All Tour Packages — Domestic & International Holidays | VK Vacations"
+        description="Explore 65+ curated domestic and international tour packages by VK Vacations. Transparent prices, verified 4-star & 5-star hotels, private AC transfers, and flexible dates."
+        keywords={["tour packages India", "holiday packages Chennai", "international vacation deals", "domestic holiday tours", "VK Vacations packages"]}
+        canonical="/packages"
+        schema={buildBreadcrumbSchema([
+          { name: "Home", url: "/" },
+          { name: "All Packages", url: "/packages" }
+        ])}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         
         {/* Page Hero Header */}

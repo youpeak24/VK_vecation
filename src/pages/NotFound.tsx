@@ -1,10 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Compass, Home, Search } from 'lucide-react';
+import { SEOHead } from '../components/seo/SEOHead';
 
 export const NotFound: React.FC = () => {
   return (
     <div className="min-h-[75vh] flex flex-col items-center justify-center pt-32 pb-20 px-4 text-center bg-[#F8FAFC]">
+      <SEOHead
+        title="404 — Page Not Found | VK Vacations India"
+        description="The requested page could not be found. Explore our luxury holiday packages and destinations."
+        noIndex
+      />
       <div className="w-20 h-20 rounded-3xl bg-[#EAF6FF] text-[#0866D9] flex items-center justify-center mb-6 shadow-md">
         <Compass size={40} className="animate-spin-slow" />
       </div>

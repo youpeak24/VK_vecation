@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, Globe2, ArrowRight } from 'lucide-react';
 import { DESTINATIONS } from '../data/destinations';
+import { SEOHead } from '../components/seo/SEOHead';
+import { buildBreadcrumbSchema } from '../utils/seoSchemas';
 
 export const Destinations: React.FC = () => {
   const [filter, setFilter] = useState<'All' | 'Domestic' | 'International'>('All');
@@ -18,6 +20,16 @@ export const Destinations: React.FC = () => {
 
   return (
     <div className="pt-28 pb-24 bg-[#F8FAFC]">
+      <SEOHead
+        title="Destinations Travel Directory — Domestic & International Guides | VK Vacations"
+        description="Comprehensive travel guides to Maldives, Switzerland, Dubai, Bali, Kashmir, Kerala, Singapore and Rajasthan. Weather, best time to visit, visa info and tour packages."
+        keywords={["travel destinations guide", "holiday destinations from India", "best time to visit Maldives", "Switzerland travel guide", "Dubai tourism"]}
+        canonical="/destinations"
+        schema={buildBreadcrumbSchema([
+          { name: "Home", url: "/" },
+          { name: "Destinations", url: "/destinations" }
+        ])}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         
         {/* Page Header */}

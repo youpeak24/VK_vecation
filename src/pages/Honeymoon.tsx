@@ -3,6 +3,8 @@ import { Heart, Send } from 'lucide-react';
 import { TOUR_PACKAGES } from '../data/packages';
 import { PackageCard } from '../components/packages/PackageCard';
 import { useInquiryModal } from '../context/InquiryModalContext';
+import { SEOHead } from '../components/seo/SEOHead';
+import { buildBreadcrumbSchema } from '../utils/seoSchemas';
 
 export const Honeymoon: React.FC = () => {
   const { openInquiryModal } = useInquiryModal();
@@ -15,6 +17,17 @@ export const Honeymoon: React.FC = () => {
 
   return (
     <div className="pt-28 pb-24 bg-gradient-to-b from-[#FFF9F5] via-white to-[#F8FAFC]">
+      <SEOHead
+        title="Romantic Honeymoon Packages — Luxury Overwater Villas & Hill Escapes | VK Vacations"
+        description="Celebrate romance with VK Vacations honeymoon packages. Private pool villas in Bali, Maldives water chalets, Kashmir Shikara stays & Swiss alpine getaways with candlelight dinners."
+        keywords={["honeymoon packages", "Maldives honeymoon package", "Bali honeymoon pool villa", "romantic holidays", "couples travel India", "honeymoon packages Chennai"]}
+        canonical="/honeymoon"
+        ogImage="https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=1200&q=80"
+        schema={buildBreadcrumbSchema([
+          { name: "Home", url: "/" },
+          { name: "Honeymoon Specials", url: "/honeymoon" }
+        ])}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         
         {/* Page Banner */}
