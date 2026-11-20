@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { InquiryModalProvider } from './context/InquiryModalContext';
 import { LoadingSpinner } from './components/ui/LoadingSpinner';
+import { RouteTracker } from './components/analytics/RouteTracker';
 
 // Layouts
 import { PublicLayout } from './layouts/PublicLayout';
@@ -62,6 +63,7 @@ const ActivityLogs = lazy(() => import('./pages/admin/ActivityLogs').then(m => (
 export const App: React.FC = () => {
   return (
     <BrowserRouter>
+      <RouteTracker />
       <InquiryModalProvider>
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
@@ -105,6 +107,7 @@ export const App: React.FC = () => {
                 <Route path="packages/:id/edit" element={<EditPackage />} />
                 <Route path="temple-packages" element={<TemplePackages />} />
                 <Route path="temple-packages/create" element={<CreateTemplePackage />} />
+                <Route path="temple-packages/:id/edit" element={<CreateTemplePackage />} />
                 <Route path="destinations" element={<AdminDestinations />} />
                 <Route path="departures" element={<Departures />} />
                 <Route path="bookings" element={<Bookings />} />

@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { Header } from '../components/layout/Header';
 import { Footer } from '../components/layout/Footer';
 import { FloatingWhatsApp } from '../components/layout/FloatingWhatsApp';
+import { AIChatbot } from '../components/chat/AIChatbot';
 import { ScrollToTop } from '../components/layout/ScrollToTop';
 import { InquiryModal } from '../components/forms/InquiryModal';
 import { SmoothScroll } from '../components/animations/SmoothScroll';
@@ -29,6 +30,9 @@ export const PublicLayout: React.FC = () => {
 
         {/* Floating WhatsApp Action Button */}
         <FloatingWhatsApp />
+
+        {/* Floating AI Travel Concierge Chatbot */}
+        <AIChatbot />
 
         {/* Global Lead Inquiry Modal */}
         <InquiryModal />

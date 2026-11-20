@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Sparkles, ArrowRight, MapPin, Clock } from 'lucide-react';
-import { TOUR_PACKAGES } from '../../data/packages';
 import { formatINR } from '../../utils/formatters';
 import { IndiaRegion } from '../../types';
+import { usePackages } from '../../hooks/useContent';
 
 export const IndiaToursSection: React.FC = () => {
+  const allPackages = usePackages();
   const [selectedRegion, setSelectedRegion] = useState<'All' | IndiaRegion>('All');
 
-  const indiaPackages = TOUR_PACKAGES.filter(p => !p.isInternational);
+  const indiaPackages = allPackages.filter(p => !p.isInternational);
 
   const filteredPackages = indiaPackages.filter(p => {
     if (selectedRegion === 'All') return true;

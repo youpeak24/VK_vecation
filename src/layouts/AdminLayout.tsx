@@ -4,6 +4,7 @@ import { Sidebar } from '../components/admin/Sidebar';
 import { Topbar } from '../components/admin/Topbar';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 import { SEOHead } from '../components/seo/SEOHead';
+import { DbErrorBanner } from '../components/admin/DbErrorBanner';
 
 export const AdminLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -33,6 +34,7 @@ export const AdminLayout: React.FC = () => {
           </Suspense>
         </main>
       </div>
+      <DbErrorBanner />
     </div>
   );
 };

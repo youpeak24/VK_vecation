@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, UserCog, Mail, Phone, ShieldCheck, X } from 'lucide-react';
 import { api } from '../../services/api';
+import { DEPARTMENTS, DEPARTMENT_ROLES, type StaffRole } from '../../data/staffStructure';
 import { StaffRecord } from '../../types';
 import { DataTable, Column } from '../../components/admin/DataTable';
 
@@ -12,8 +13,15 @@ export const Staff: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [role, setRole] = useState('Tour Manager');
-  const [department, setDepartment] = useState('Operations');
+  const [department, setDepartment] = useState(DEPARTMENTS[0]);
+  const [role, setRole] = useState<StaffRole>(DEPARTMENT_ROLES[DEPARTMENTS[0]][0]);
+
+  // Role always belongs to the chosen department.
+  const rolesForDepartment = DEPARTMENT_ROLES[department] ?? [];
+  const handleDepartmentChange = (next: string) => {
+    setDepartment(next);
+    setRole(DEPARTMENT_ROLES[next][0]);
+  };
 
   const loadStaff = () => {
     setStaff(api.staff.getAll());
@@ -40,14 +48,15 @@ export const Staff: React.FC = () => {
       name,
       email,
       phone,
-      role: role as any,
-      department: department as any,
+      role,
+      department,
       status: 'Active'
     });
 
     setName('');
     setEmail('');
     setPhone('');
+    handleDepartmentChange(DEPARTMENTS[0]);
     setShowAddModal(false);
   };
 
@@ -193,28 +202,35 @@ export const Staff: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-heading font-bold text-slate-700 mb-1">Role</label>
+                  <label className="block font-heading font-bold text-slate-700 mb-1">Department</label>
                   <select
-                    value={role}
-                    onChange={(e) => setRole(e.target.value)}
+                    value={department}
+                    onChange={(e) => handleDepartmentChange(e.target.value)}
+                    required
                     className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white"
                   >
-                    <option value="Super Admin">Super Admin</option>
-                    <option value="Tour Manager">Tour Manager</option>
-                    <option value="Sales Executive">Sales Executive</option>
-                    <option value="Operations Executive">Operations Executive</option>
-                    <option value="Accountant">Accountant</option>
+                    {DEPARTMENTS.map((dept) => (
+                      <option key={dept} value={dept}>
+                        {dept}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div>
-                  <label className="block font-heading font-bold text-slate-700 mb-1">Department</label>
-                  <input
-                    type="text"
-                    value={department}
-                    onChange={(e) => setDepartment(e.target.value)}
-                    placeholder="e.g. Sales"
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200"
-                  />
+                  <label className="block font-heading font-bold text-slate-700 mb-1">Role</label>
+                  <select
+                    value={role}
+                    onChange={(e) => setRole(e.target.value as StaffRole)}
+                    required
+                    disabled={rolesForDepartment.length === 1}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white disabled:bg-slate-50 disabled:text-slate-600"
+                  >
+                    {rolesForDepartment.map((r) => (
+                      <option key={r} value={r}>
+                        {r}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
 

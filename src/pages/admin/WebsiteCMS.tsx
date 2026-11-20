@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Globe, Image as ImageIcon, BookOpen, Search, Plus, CheckCircle2, Star, Trash2 } from 'lucide-react';
 import { api } from '../../services/api';
+import { ImageField } from '../../components/admin/ImageField';
 import { WebsiteBanner, SEOMetadata } from '../../types';
 import { BLOG_POSTS } from '../../data/blog';
 
@@ -160,17 +161,8 @@ export const WebsiteCMS: React.FC = () => {
                 />
               </div>
 
-              <div>
-                <label className="block font-heading font-bold text-slate-700 mb-1">Image URL *</label>
-                <input
-                  type="url"
-                  required
-                  value={bannerImage}
-                  onChange={(e) => setBannerImage(e.target.value)}
-                  placeholder="https://images.unsplash.com/..."
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200"
-                />
-              </div>
+              <ImageField label="Banner Image" value={bannerImage} onChange={setBannerImage} required />
+
 
               <button
                 type="submit"

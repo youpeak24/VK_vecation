@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { Compass, Lock, Mail, ArrowRight, ShieldCheck, AlertCircle, Sparkles } from 'lucide-react';
 import { authService } from '../../services/auth';
+import { useAuth } from '../../hooks/useAuth';
 import { SEOHead } from '../../components/seo/SEOHead';
 
 export const AdminLogin: React.FC = () => {
@@ -11,18 +12,21 @@ export const AdminLogin: React.FC = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
+  const { user } = useAuth();
 
   const from = (location.state as any)?.from?.pathname || '/admin';
 
   useEffect(() => {
-    if (authService.isAuthenticated()) {
-      navigate('/admin', { replace: true });
+    if (user) {
+      navigate(from, { replace: true });
     }
-  }, [navigate]);
+  }, [user, from, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setNotice(null);
     setIsLoading(true);
 
     try {
@@ -35,13 +39,18 @@ export const AdminLogin: React.FC = () => {
     }
   };
 
-  const handleDemoFill = (type: 'admin' | 'manager') => {
-    if (type === 'admin') {
-      setEmail('admin@vkvacations.in');
-      setPassword('admin123');
-    } else {
-      setEmail('manager@vkvacations.in');
-      setPassword('manager123');
+  const handleForgotPassword = async () => {
+    setError(null);
+    setNotice(null);
+    if (!email.trim()) {
+      setError('Enter your staff email above, then click "Forgot?" again.');
+      return;
+    }
+    try {
+      await authService.sendPasswordReset(email);
+      setNotice('If that email belongs to a staff account, a password-reset link is on its way.');
+    } catch (err: any) {
+      setError(err.message || 'Could not send the reset email. Please try again.');
     }
   };
 
@@ -100,6 +109,12 @@ export const AdminLogin: React.FC = () => {
             </div>
           )}
 
+          {notice && (
+            <div className="mb-5 p-3 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-xs text-emerald-200">
+              {notice}
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-xs font-heading font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
@@ -123,9 +138,13 @@ export const AdminLogin: React.FC = () => {
                 <label className="text-xs font-heading font-semibold uppercase tracking-wider text-slate-300">
                   Password
                 </label>
-                <span className="text-[11px] text-[#00B8A9] cursor-pointer hover:underline">
+                <button
+                  type="button"
+                  onClick={handleForgotPassword}
+                  className="text-[11px] text-[#00B8A9] cursor-pointer hover:underline"
+                >
                   Forgot?
-                </span>
+                </button>
               </div>
               <div className="relative">
                 <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -155,29 +174,6 @@ export const AdminLogin: React.FC = () => {
               )}
             </button>
           </form>
-
-          {/* Quick Demo Access Buttons */}
-          <div className="mt-6 pt-5 border-t border-white/10 space-y-2">
-            <span className="text-[11px] font-heading font-semibold uppercase tracking-wider text-slate-400 block text-center">
-              One-Click Demo Credentials
-            </span>
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={() => handleDemoFill('admin')}
-                className="py-2 px-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-[11px] text-slate-200 font-medium transition-colors cursor-pointer text-center"
-              >
-                Super Admin
-              </button>
-              <button
-                type="button"
-                onClick={() => handleDemoFill('manager')}
-                className="py-2 px-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-[11px] text-slate-200 font-medium transition-colors cursor-pointer text-center"
-              >
-                Tour Manager
-              </button>
-            </div>
-          </div>
         </div>
 
         {/* Back Link */}

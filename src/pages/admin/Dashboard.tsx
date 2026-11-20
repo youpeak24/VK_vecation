@@ -30,7 +30,7 @@ export const Dashboard: React.FC = () => {
     activeEnquiriesCount: 14,
     totalCustomersCount: 382,
     pendingFollowUps: 8,
-    conversionRate: 68.4
+    conversionRate: 0
   });
 
   const [recentBookings, setRecentBookings] = useState<BookingRecord[]>([]);
@@ -105,42 +105,30 @@ export const Dashboard: React.FC = () => {
         <StatCard
           title="Total Revenue (YTD)"
           value={formatCurrency(metrics.totalRevenue)}
-          change="+18.4%"
-          isPositive={true}
           icon={CreditCard}
           iconColor="text-emerald-600"
           iconBg="bg-emerald-50"
-          subtitle="Processed via Razorpay & Bank"
         />
         <StatCard
           title="Active Bookings"
           value={metrics.totalBookingsCount}
-          change="+12.5%"
-          isPositive={true}
           icon={TicketCheck}
           iconColor="text-[#0866D9]"
           iconBg="bg-blue-50"
-          subtitle="24 departures departing this month"
         />
         <StatCard
           title="New Tour Inquiries"
           value={metrics.activeEnquiriesCount}
-          change="8 pending action"
-          isPositive={true}
           icon={MessageSquare}
           iconColor="text-amber-600"
           iconBg="bg-amber-50"
-          subtitle="From website form & WhatsApp"
         />
         <StatCard
           title="Lead Conversion Rate"
           value={`${metrics.conversionRate}%`}
-          change="+4.2%"
-          isPositive={true}
           icon={TrendingUp}
           iconColor="text-[#00B8A9]"
           iconBg="bg-teal-50"
-          subtitle="South Indian travelers benchmark"
         />
       </div>
 

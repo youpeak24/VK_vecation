@@ -1,6 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Phone, Mail, Clock, ShieldCheck, UserCheck } from 'lucide-react';
+import { Phone, Mail, Clock, ShieldCheck } from 'lucide-react';
 import { COMPANY } from '../../data/company';
 
 export const TopContactBar: React.FC = () => {
@@ -20,7 +19,7 @@ export const TopContactBar: React.FC = () => {
           </div>
         </div>
 
-        {/* Right: Verified Direct Contacts & Admin Portal */}
+        {/* Right: Verified Direct Contacts */}
         <div className="flex items-center gap-5">
           <a
             href={`tel:${COMPANY.phone.replace(/\s+/g, '')}`}
@@ -42,14 +41,6 @@ export const TopContactBar: React.FC = () => {
             <ShieldCheck size={12} />
             <span>Govt. Reg. Travel Partner</span>
           </div>
-
-          <Link
-            to="/admin"
-            className="flex items-center gap-1 text-[11px] font-heading font-semibold text-slate-300 hover:text-white bg-white/10 hover:bg-white/20 px-2.5 py-0.5 rounded-full transition-colors border border-white/15"
-          >
-            <UserCheck size={11} className="text-[#00B8A9]" />
-            <span>Staff Portal</span>
-          </Link>
         </div>
       </div>
     </div>

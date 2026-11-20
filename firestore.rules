@@ -1,0 +1,220 @@
+rules_version = '2';
+
+// VK Vacations — Firestore security rules.
+//
+// Who can do what:
+//   Visitors (not signed in)
+//     • read published website content (isActive == true) + banners/SEO/departures
+//     • CREATE one enquiry / contact message (strictly validated); never read them back
+//   Admins  (signed in AND a document exists at admins/{uid}, active != false)
+//     • read + write all operational data
+//     • delete financial records / customers only if "Super Admin"
+//   Super Admins
+//     • manage admins/{uid} (who may sign in) and the staff directory
+//   Nobody
+//     • edit or delete audit logs
+//
+// NOTE: anyone can create a Firebase Auth account with the public API key, so
+// being signed in proves nothing. Every privilege below is tied to admins/{uid}.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ───────────────────────── helpers ─────────────────────────
+
+    function adminPath() {
+      return /databases/$(database)/documents/admins/$(request.auth.uid);
+    }
+
+    function isAdmin() {
+      return request.auth != null
+        && exists(adminPath())
+        && get(adminPath()).data.get('active', true) == true;
+    }
+
+    function isSuperAdmin() {
+      return isAdmin() && get(adminPath()).data.get('role', '') == 'Super Admin';
+    }
+
+    // Optional string field: absent, or a string no longer than `max`.
+    function optStr(d, k, max) {
+      return !(k in d) || (d[k] is string && d[k].size() <= max);
+    }
+
+    function validEmail(v) {
+      return v is string && v.size() <= 254 && v.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$');
+    }
+
+    // Website enquiry created by an anonymous visitor.
+    // Keep in sync with inquiryService.submitInquiry().
+    function validEnquiry(d) {
+      return d.keys().hasOnly([
+          'referenceNumber', 'customerName', 'name', 'email', 'phone', 'destination',
+          'travelers', 'vacationType', 'city', 'whatsapp', 'packageTitle', 'travelDate',
+          'budgetRange', 'specialRequirements', 'preferredContactMethod', 'consent',
+          'status', 'priority', 'source', 'submittedAt', 'createdAt'
+        ])
+        && d.keys().hasAll(['customerName', 'email', 'phone', 'destination', 'status', 'submittedAt', 'createdAt'])
+        && d.status == 'New'
+        && (!('priority' in d) || d.priority in ['High', 'Medium', 'Low'])
+        && (!('source' in d) || d.source == 'website')
+        && d.customerName is string && d.customerName.size() >= 2 && d.customerName.size() <= 120
+        && validEmail(d.email)
+        && d.phone is string && d.phone.size() >= 6 && d.phone.size() <= 25
+        && d.destination is string && d.destination.size() >= 1 && d.destination.size() <= 160
+        && (!('travelers' in d) || (d.travelers is int && d.travelers >= 1 && d.travelers <= 500))
+        && (!('consent' in d) || d.consent is bool)
+        && optStr(d, 'referenceNumber', 40)
+        && optStr(d, 'name', 120)
+        && optStr(d, 'vacationType', 80)
+        && optStr(d, 'city', 120)
+        && optStr(d, 'whatsapp', 25)
+        && optStr(d, 'packageTitle', 200)
+        && optStr(d, 'travelDate', 60)
+        && optStr(d, 'budgetRange', 80)
+        && optStr(d, 'specialRequirements', 2000)
+        && optStr(d, 'preferredContactMethod', 20)
+        && d.submittedAt is string && d.submittedAt.size() <= 40
+        && d.createdAt == request.time;
+    }
+
+    // Contact-page message created by an anonymous visitor.
+    // Keep in sync with inquiryService.submitContactMessage().
+    function validContact(d) {
+      return d.keys().hasOnly([
+          'referenceNumber', 'name', 'email', 'phone', 'subject', 'message',
+          'status', 'source', 'submittedAt', 'createdAt'
+        ])
+        && d.keys().hasAll(['name', 'email', 'phone', 'message', 'status', 'submittedAt', 'createdAt'])
+        && d.status == 'New'
+        && (!('source' in d) || d.source == 'website')
+        && d.name is string && d.name.size() >= 1 && d.name.size() <= 120
+        && validEmail(d.email)
+        && d.phone is string && d.phone.size() >= 6 && d.phone.size() <= 25
+        && d.message is string && d.message.size() >= 1 && d.message.size() <= 4000
+        && optStr(d, 'referenceNumber', 40)
+        && optStr(d, 'subject', 160)
+        && d.submittedAt is string && d.submittedAt.size() <= 40
+        && d.createdAt == request.time;
+    }
+
+    // ───────────────── public website content ─────────────────
+    // Visitors may only list documents with isActive == true (their query must
+    // include where('isActive', '==', true)); admins see drafts too.
+
+    match /packages/{id} {
+      allow read: if isAdmin() || resource.data.isActive == true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /templePackages/{id} {
+      allow read: if isAdmin() || resource.data.isActive == true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /destinations/{id} {
+      allow read: if isAdmin() || resource.data.isActive == true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /departures/{id} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /banners/{id} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /seo/{id} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // One-time "content has been seeded" marker.
+    match /meta/{id} {
+      allow read: if true;
+      allow create, update: if isAdmin();
+      allow delete: if isSuperAdmin();
+    }
+
+    // ───────────────── visitor submissions ─────────────────
+
+    match /enquiries/{id} {
+      allow create: if isAdmin() || validEnquiry(request.resource.data);
+      allow read, update: if isAdmin();
+      allow delete: if isSuperAdmin();
+    }
+
+    match /contactSubmissions/{id} {
+      allow create: if isAdmin() || validContact(request.resource.data);
+      allow read, update: if isAdmin();
+      allow delete: if isSuperAdmin();
+    }
+
+    // ───────────────── CRM / operations (admins only) ─────────────────
+
+    match /leads/{id} {
+      allow read, create, update, delete: if isAdmin();
+    }
+
+    match /followUps/{id} {
+      allow read, create, update, delete: if isAdmin();
+    }
+
+    match /suppliers/{id} {
+      allow read, create, update, delete: if isAdmin();
+    }
+
+    match /customers/{id} {
+      allow read, create, update: if isAdmin();
+      allow delete: if isSuperAdmin();
+    }
+
+    // ───────────────── finance (delete = Super Admin only) ─────────────────
+
+    match /bookings/{id} {
+      allow read, create, update: if isAdmin();
+      allow delete: if isSuperAdmin();
+    }
+
+    match /payments/{id} {
+      allow read, create, update: if isAdmin();
+      allow delete: if isSuperAdmin();
+    }
+
+    match /invoices/{id} {
+      allow read, create, update: if isAdmin();
+      allow delete: if isSuperAdmin();
+    }
+
+    match /refunds/{id} {
+      allow read, create, update: if isAdmin();
+      allow delete: if isSuperAdmin();
+    }
+
+    // ───────────────── people & access control ─────────────────
+
+    match /staff/{id} {
+      allow read: if isAdmin();
+      allow create, update, delete: if isSuperAdmin();
+    }
+
+    // Who may sign in to the console. A user can read only their own document
+    // (the login screen needs it); only Super Admins can list or change them.
+    match /admins/{uid} {
+      allow get: if request.auth != null && (request.auth.uid == uid || isSuperAdmin());
+      allow list: if isSuperAdmin();
+      allow create, update, delete: if isSuperAdmin();
+    }
+
+    // Append-only: entries are attributed to the signed-in admin and never change.
+    match /auditLogs/{id} {
+      allow read: if isAdmin();
+      allow create: if isAdmin() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if false;
+    }
+
+    // Everything else is denied by default.
+  }
+}

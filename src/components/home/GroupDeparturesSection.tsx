@@ -10,17 +10,18 @@ import {
   CheckCircle2,
   Clock
 } from 'lucide-react';
-import { SCHEDULED_DEPARTURES } from '../../data/departures';
 import { formatINR, formatDate } from '../../utils/formatters';
 import { useInquiryModal } from '../../context/InquiryModalContext';
+import { useDepartures } from '../../hooks/useContent';
 
 export const GroupDeparturesSection: React.FC = () => {
+  const allDepartures = useDepartures();
   const { openInquiryModal } = useInquiryModal();
   const [selectedCity, setSelectedCity] = useState<string>('All');
 
   const departureCities = ['All', 'Chennai', 'Bangalore', 'Coimbatore'];
 
-  const filteredDepartures = SCHEDULED_DEPARTURES.filter(dep => {
+  const filteredDepartures = allDepartures.filter(dep => {
     if (selectedCity === 'All') return true;
     return dep.departureCity === selectedCity;
   });

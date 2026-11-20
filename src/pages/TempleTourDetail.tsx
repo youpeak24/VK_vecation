@@ -22,21 +22,19 @@ import { formatCurrency } from '../utils/formatters';
 import { useInquiryModal } from '../context/InquiryModalContext';
 import { COMPANY } from '../data/company';
 import { SEOHead } from '../components/seo/SEOHead';
+import { useTemplePackages } from '../hooks/useContent';
 import { buildTempleTourSchema, buildBreadcrumbSchema } from '../utils/seoSchemas';
 
 export const TempleTourDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const [pkg, setPkg] = useState<TemplePackage | null>(null);
+  const templePackages = useTemplePackages();
+  const pkg: TemplePackage | null = templePackages.find((t) => t.slug === slug) ?? null;
   const [expandedDay, setExpandedDay] = useState<number | null>(1);
   const [passengers, setPassengers] = useState<number>(2);
   const { openModal } = useInquiryModal();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    const found = api.templePackages.getBySlug(slug || '');
-    if (found) {
-      setPkg(found);
-    }
   }, [slug]);
 
   if (!pkg) {

@@ -7,13 +7,14 @@ import {
   ArrowRight, 
   ShieldCheck 
 } from 'lucide-react';
-import { SCHEDULED_DEPARTURES } from '../data/departures';
 import { formatINR, formatDate } from '../utils/formatters';
 import { useInquiryModal } from '../context/InquiryModalContext';
 import { SEOHead } from '../components/seo/SEOHead';
 import { buildBreadcrumbSchema } from '../utils/seoSchemas';
+import { useDepartures } from '../hooks/useContent';
 
 export const GroupTours: React.FC = () => {
+  const allDepartures = useDepartures();
   const { openInquiryModal } = useInquiryModal();
   const [selectedHub, setSelectedHub] = useState('All');
   const [selectedGroupType, setSelectedGroupType] = useState('All');
@@ -22,7 +23,7 @@ export const GroupTours: React.FC = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const filtered = SCHEDULED_DEPARTURES.filter((dep: any) => {
+  const filtered = allDepartures.filter((dep: any) => {
     if (selectedHub !== 'All' && dep.departureCity !== selectedHub) return false;
     if (selectedGroupType !== 'All' && dep.groupType !== selectedGroupType) return false;
     return true;

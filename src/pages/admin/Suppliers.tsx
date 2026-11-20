@@ -38,7 +38,6 @@ export const Suppliers: React.FC = () => {
       phone,
       email,
       city,
-      rating: 4.8,
       status: 'Active',
       contractStatus: 'Active'
     });
@@ -95,10 +94,14 @@ export const Suppliers: React.FC = () => {
       header: 'Quality Rating',
       sortable: true,
       render: (s) => (
-        <div className="flex items-center gap-1 text-xs font-heading font-bold text-slate-800">
-          <Star size={12} className="fill-amber-400 text-amber-400" />
-          <span>{s.rating}</span>
-        </div>
+        s.rating ? (
+          <div className="flex items-center gap-1 text-xs font-heading font-bold text-slate-800">
+            <Star size={12} className="fill-amber-400 text-amber-400" />
+            <span>{s.rating}</span>
+          </div>
+        ) : (
+          <span className="text-xs text-slate-300">Not rated</span>
+        )
       )
     },
     {

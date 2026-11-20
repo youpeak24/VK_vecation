@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles } from 'lucide-react';
-import { TOUR_PACKAGES } from '../data/packages';
 import { PackageCard } from '../components/packages/PackageCard';
 import { SEOHead } from '../components/seo/SEOHead';
 import { buildBreadcrumbSchema } from '../utils/seoSchemas';
 import type { IndiaRegion } from '../types';
+import { usePackages } from '../hooks/useContent';
 
 export const IndiaTours: React.FC = () => {
+  const allPackages = usePackages();
   const [selectedRegion, setSelectedRegion] = useState<'All' | IndiaRegion>('All');
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const indiaPackages = TOUR_PACKAGES.filter((p: any) => !p.isInternational);
+  const indiaPackages = allPackages.filter((p: any) => !p.isInternational);
 
   const filtered = indiaPackages.filter((p: any) => {
     if (selectedRegion === 'All') return true;

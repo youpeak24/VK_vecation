@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Save, Trash2 } from 'lucide-react';
 import { api } from '../../services/api';
+import { ImageField } from '../../components/admin/ImageField';
 import { TourPackage } from '../../types';
 
 export const EditPackage: React.FC = () => {
@@ -220,19 +221,7 @@ export const EditPackage: React.FC = () => {
             </div>
           </div>
 
-          <div>
-            <label className="block font-heading font-bold text-slate-700 mb-1">Featured Photography URL</label>
-            <div className="flex gap-2">
-              <input
-                type="url"
-                required
-                value={featuredImage}
-                onChange={(e) => setFeaturedImage(e.target.value)}
-                className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-200"
-              />
-              <img src={featuredImage} alt="Preview" className="w-11 h-11 rounded-xl object-cover border border-slate-200 shrink-0" />
-            </div>
-          </div>
+          <ImageField label="Featured Photography" value={featuredImage} onChange={setFeaturedImage} required />
 
           <div>
             <label className="block font-heading font-bold text-slate-700 mb-1">Overview</label>

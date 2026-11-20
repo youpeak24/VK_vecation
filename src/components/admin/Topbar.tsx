@@ -17,6 +17,24 @@ import {
 import { authService } from '../../services/auth';
 import { api } from '../../services/api';
 
+interface Notification {
+  id: string;
+  title: string;
+  detail: string;
+  at: string;
+}
+
+function timeAgo(iso: string): string {
+  const ms = Date.now() - Date.parse(iso);
+  if (!Number.isFinite(ms) || ms < 0) return '';
+  const minutes = Math.floor(ms / 60000);
+  if (minutes < 1) return 'just now';
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  return `${Math.floor(hours / 24)}d ago`;
+}
+
 interface TopbarProps {
   onOpenSidebar: () => void;
 }
@@ -27,7 +45,8 @@ export const Topbar: React.FC<TopbarProps> = ({ onOpenSidebar }) => {
   const [showQuickActions, setShowQuickActions] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-  const [unreadCount, setUnreadCount] = useState(3);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const unreadCount = notifications.length;
 
   const quickRef = useRef<HTMLDivElement>(null);
   const notifRef = useRef<HTMLDivElement>(null);
@@ -49,34 +68,40 @@ export const Topbar: React.FC<TopbarProps> = ({ onOpenSidebar }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Live notifications: new website enquiries and contact messages awaiting a response.
+  useEffect(() => {
+    const load = () => {
+      const fromEnquiries: Notification[] = api.enquiries
+        .getAll()
+        .filter((e) => e.status === 'New')
+        .map((e) => ({
+          id: `enq-${e.id}`,
+          title: 'New Travel Enquiry',
+          detail: `${e.customerName || e.name} · ${e.destination}`,
+          at: e.submittedAt || e.createdAt || ''
+        }));
+      const fromContacts: Notification[] = api.contactSubmissions
+        .getAll()
+        .filter((c) => c.status === 'New')
+        .map((c) => ({
+          id: `msg-${c.id}`,
+          title: 'New Contact Message',
+          detail: `${c.name}${c.subject ? ` · ${c.subject}` : ''}`,
+          at: c.submittedAt || c.createdAt || ''
+        }));
+      setNotifications(
+        [...fromEnquiries, ...fromContacts].sort((a, b) => Date.parse(b.at) - Date.parse(a.at)).slice(0, 8)
+      );
+    };
+    load();
+    window.addEventListener('vk_db_update', load);
+    return () => window.removeEventListener('vk_db_update', load);
+  }, []);
+
   const handleLogout = () => {
     authService.logout();
     navigate('/admin/login');
   };
-
-  const notifications = [
-    {
-      id: 'notif-1',
-      title: 'New Travel Enquiry Received',
-      detail: 'Anand R. requested quotation for Swiss Alpine Wonder',
-      time: '12m ago',
-      unread: true
-    },
-    {
-      id: 'notif-2',
-      title: 'Booking Confirmed (VK-BKG-2026-089)',
-      detail: 'Payment of ₹1,77,000 received via Razorpay UPI',
-      time: '45m ago',
-      unread: true
-    },
-    {
-      id: 'notif-3',
-      title: 'Temple Pilgrimage Inquiry',
-      detail: 'Muruganandam asked for 6 Pax Arupadai Veedu tour',
-      time: '2h ago',
-      unread: true
-    }
-  ];
 
   return (
     <header className="h-16 bg-white border-b border-slate-200 sticky top-0 z-30 flex items-center justify-between px-4 sm:px-6">
@@ -155,10 +180,7 @@ export const Topbar: React.FC<TopbarProps> = ({ onOpenSidebar }) => {
         {/* Notifications Dropdown */}
         <div ref={notifRef} className="relative">
           <button
-            onClick={() => {
-              setShowNotifications(!showNotifications);
-              setUnreadCount(0);
-            }}
+            onClick={() => setShowNotifications(!showNotifications)}
             className="p-2 text-slate-600 hover:text-[#071B35] hover:bg-slate-100 rounded-xl relative transition-colors cursor-pointer"
             aria-label="Notifications"
           >
@@ -173,15 +195,17 @@ export const Topbar: React.FC<TopbarProps> = ({ onOpenSidebar }) => {
           {showNotifications && (
             <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-slate-100 p-3 z-50 animate-in fade-in zoom-in-95 duration-150">
               <div className="flex items-center justify-between pb-2 border-b border-slate-100 px-1">
-                <span className="font-heading font-bold text-xs text-[#071B35]">Recent Notifications</span>
-                <span className="text-[10px] text-blue-600 font-semibold cursor-pointer">Mark all read</span>
+                <span className="font-heading font-bold text-xs text-[#071B35]">Awaiting Response</span>
               </div>
               <div className="divide-y divide-slate-100 mt-1 max-h-72 overflow-y-auto">
+                {notifications.length === 0 && (
+                  <p className="py-6 text-center text-[11px] text-slate-400">You're all caught up. No new enquiries.</p>
+                )}
                 {notifications.map((n) => (
                   <div key={n.id} className="py-2.5 px-1 hover:bg-slate-50 rounded-lg transition-colors">
                     <div className="flex items-start justify-between gap-2">
                       <span className="font-semibold text-xs text-[#071B35]">{n.title}</span>
-                      <span className="text-[10px] text-slate-400 shrink-0">{n.time}</span>
+                      <span className="text-[10px] text-slate-400 shrink-0">{timeAgo(n.at)}</span>
                     </div>
                     <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">{n.detail}</p>
                   </div>
@@ -211,7 +235,7 @@ export const Topbar: React.FC<TopbarProps> = ({ onOpenSidebar }) => {
             </div>
             <div className="hidden md:block text-left">
               <span className="text-xs font-heading font-bold text-[#071B35] block leading-tight">
-                {currentUser?.name || 'Vignesh Kumar'}
+                {currentUser?.name || 'Staff'}
               </span>
               <span className="text-[10px] text-slate-400 block leading-none">
                 {currentUser?.role || 'Super Admin'}

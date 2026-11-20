@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Calendar, Clock, CheckCircle2, AlertCircle, Phone, MessageSquare, X } from 'lucide-react';
 import { api } from '../../services/api';
+import { authService } from '../../services/auth';
 import { FollowUpRecord } from '../../types';
 import { DataTable, Column } from '../../components/admin/DataTable';
 
@@ -13,7 +14,7 @@ export const FollowUps: React.FC = () => {
   const [customerName, setCustomerName] = useState('');
   const [dueDate, setDueDate] = useState(new Date().toISOString().split('T')[0]);
   const [notes, setNotes] = useState('');
-  const [assignedTo, setAssignedTo] = useState('Vignesh Kumar');
+  const [assignedTo, setAssignedTo] = useState(authService.getCurrentUser()?.name ?? '');
 
   const loadFollowUps = () => {
     setFollowUps(api.followUps.getAll());

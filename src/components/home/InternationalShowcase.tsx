@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Globe2, ArrowRight, MapPin, Sparkles } from 'lucide-react';
-import { DESTINATIONS } from '../../data/destinations';
+import { useDestinations } from '../../hooks/useContent';
 
 export const InternationalShowcase: React.FC = () => {
-  const intlDests = DESTINATIONS.filter(d => d.isInternational);
+  const allDestinations = useDestinations();
+  const intlDests = allDestinations.filter(d => d.isInternational);
 
   return (
     <section className="py-24 bg-white relative">

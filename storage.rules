@@ -1,0 +1,26 @@
+rules_version = '2';
+
+// VK Vacations — Firebase Storage rules.
+//   • Anyone can VIEW uploaded site images (they appear on the public website).
+//   • Only active admins (admins/{uid} in Firestore) can upload, replace or delete.
+//   • Uploads must be images under 5 MB.
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isAdmin() {
+      return request.auth != null
+        && firestore.exists(/databases/(default)/documents/admins/$(request.auth.uid))
+        && firestore.get(/databases/(default)/documents/admins/$(request.auth.uid)).data.get('active', true) == true;
+    }
+
+    match /uploads/{allPaths=**} {
+      allow read: if true;
+      allow create: if isAdmin()
+        && request.resource.size < 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/(jpeg|png|webp|gif|avif)');
+      allow update, delete: if isAdmin();
+    }
+
+    // Everything else is denied by default.
+  }
+}

@@ -349,7 +349,7 @@ export interface SupplierRecord {
   email: string;
   city: string;
   country?: string;
-  rating: number;
+  rating?: number;
   contractStatus?: 'Active' | 'Under Review' | 'Terminated';
   status?: string;
   balancePayable?: number;
@@ -393,6 +393,8 @@ export interface AuditLogRecord {
   details: string;
   ipAddress: string;
   timestamp: string;
+  /** Firebase Auth uid of the staff member who performed the action. */
+  userId?: string;
 }
 
 export interface WebsiteBanner {

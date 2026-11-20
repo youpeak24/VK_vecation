@@ -1,19 +1,20 @@
 import React, { useEffect } from 'react';
 import { Heart, Send } from 'lucide-react';
-import { TOUR_PACKAGES } from '../data/packages';
 import { PackageCard } from '../components/packages/PackageCard';
 import { useInquiryModal } from '../context/InquiryModalContext';
 import { SEOHead } from '../components/seo/SEOHead';
 import { buildBreadcrumbSchema } from '../utils/seoSchemas';
+import { usePackages } from '../hooks/useContent';
 
 export const Honeymoon: React.FC = () => {
+  const allPackages = usePackages();
   const { openInquiryModal } = useInquiryModal();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const honeymoonPackages = TOUR_PACKAGES.filter((p: any) => p.category.includes('Honeymoon'));
+  const honeymoonPackages = allPackages.filter((p: any) => p.category.includes('Honeymoon'));
 
   return (
     <div className="pt-28 pb-24 bg-gradient-to-b from-[#FFF9F5] via-white to-[#F8FAFC]">

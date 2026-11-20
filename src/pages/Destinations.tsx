@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, Globe2, ArrowRight } from 'lucide-react';
-import { DESTINATIONS } from '../data/destinations';
 import { SEOHead } from '../components/seo/SEOHead';
 import { buildBreadcrumbSchema } from '../utils/seoSchemas';
+import { useDestinations } from '../hooks/useContent';
 
 export const Destinations: React.FC = () => {
+  const allDestinations = useDestinations();
   const [filter, setFilter] = useState<'All' | 'Domestic' | 'International'>('All');
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const filtered = DESTINATIONS.filter((d: any) => {
+  const filtered = allDestinations.filter((d: any) => {
     if (filter === 'Domestic') return !d.isInternational;
     if (filter === 'International') return d.isInternational;
     return true;

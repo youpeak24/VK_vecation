@@ -20,6 +20,7 @@ export const Header: React.FC = () => {
   const location = useLocation();
   const { openInquiryModal } = useInquiryModal();
   const megaMenuRef = useRef<HTMLDivElement>(null);
+  const megaPanelRef = useRef<HTMLDivElement>(null);
 
   const isHome = location.pathname === '/';
 
@@ -47,15 +48,23 @@ export const Header: React.FC = () => {
   // Click outside mega menu listener
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (megaMenuRef.current && !megaMenuRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      const insideButton = megaMenuRef.current?.contains(target);
+      const insidePanel = megaPanelRef.current?.contains(target);
+      if (!insideButton && !insidePanel) {
         setIsMegaMenuOpen(false);
       }
     };
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsMegaMenuOpen(false);
+    };
     if (isMegaMenuOpen) {
       document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleEscape);
     }
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscape);
     };
   }, [isMegaMenuOpen]);
 
@@ -118,7 +127,6 @@ export const Header: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsMegaMenuOpen(!isMegaMenuOpen)}
-                onMouseEnter={() => setIsMegaMenuOpen(true)}
                 className={`${navBase} flex items-center gap-1 hover:text-[#0866D9] py-2 cursor-pointer ${
                   isMegaMenuOpen ? 'text-[#0866D9]' : isSolid ? 'text-[#142238]' : 'text-white'
                 }`}
@@ -183,7 +191,7 @@ export const Header: React.FC = () => {
 
         {/* Mega Menu Dropdown */}
         {isMegaMenuOpen && (
-          <div onMouseLeave={() => setIsMegaMenuOpen(false)}>
+          <div ref={megaPanelRef}>
             <MegaMenu onClose={() => setIsMegaMenuOpen(false)} />
           </div>
         )}

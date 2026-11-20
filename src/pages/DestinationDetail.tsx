@@ -9,18 +9,19 @@ import {
   Info,
   DollarSign
 } from 'lucide-react';
-import { DESTINATIONS } from '../data/destinations';
-import { TOUR_PACKAGES } from '../data/packages';
 import { PackageCard } from '../components/packages/PackageCard';
 import { useInquiryModal } from '../context/InquiryModalContext';
 import { SEOHead } from '../components/seo/SEOHead';
 import { buildDestinationSchema, buildBreadcrumbSchema } from '../utils/seoSchemas';
+import { usePackages, useDestinations } from '../hooks/useContent';
 
 export const DestinationDetail: React.FC = () => {
+  const allPackages = usePackages();
+  const allDestinations = useDestinations();
   const { slug } = useParams<{ slug: string }>();
   const { openInquiryModal } = useInquiryModal();
 
-  const dest = DESTINATIONS.find((d: any) => d.slug === slug);
+  const dest = allDestinations.find((d: any) => d.slug === slug);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -39,7 +40,7 @@ export const DestinationDetail: React.FC = () => {
   }
 
   // Find packages corresponding to this destination
-  const matchedPackages = TOUR_PACKAGES.filter((p: any) => 
+  const matchedPackages = allPackages.filter((p: any) => 
     p.destination.toLowerCase().includes(dest.name.toLowerCase()) ||
     dest.name.toLowerCase().includes(p.destination.toLowerCase())
   );

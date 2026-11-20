@@ -14,7 +14,6 @@ import {
   Send,
   ShieldCheck
 } from 'lucide-react';
-import { TOUR_PACKAGES } from '../data/packages';
 import { COMPANY } from '../data/company';
 import { formatINR, generateWhatsAppLink } from '../utils/formatters';
 import { RatingStars } from '../components/ui/RatingStars';
@@ -23,15 +22,17 @@ import { PackageCard } from '../components/packages/PackageCard';
 import { packageService } from '../services/packageService';
 import { SEOHead } from '../components/seo/SEOHead';
 import { buildPackageSchema, buildBreadcrumbSchema } from '../utils/seoSchemas';
+import { usePackages } from '../hooks/useContent';
 
 export const PackageDetail: React.FC = () => {
+  const allPackages = usePackages();
   const { slug } = useParams<{ slug: string }>();
   const { openInquiryModal } = useInquiryModal();
 
   const [activeDay, setActiveDay] = useState<number>(1);
   const [selectedGalleryImg, setSelectedGalleryImg] = useState<string>('');
 
-  const pkg = TOUR_PACKAGES.find(p => p.slug === slug);
+  const pkg = allPackages.find(p => p.slug === slug);
 
   useEffect(() => {
     window.scrollTo(0, 0);

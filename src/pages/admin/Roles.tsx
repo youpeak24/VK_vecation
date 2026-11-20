@@ -30,7 +30,7 @@ export const Roles: React.FC = () => {
       }
     },
     {
-      name: 'Sales Executive',
+      name: 'Sales Specialist',
       description: 'Handles incoming leads, client follow-ups, quotation generation, and customer CRM.',
       usersCount: 5,
       permissions: {
@@ -43,7 +43,7 @@ export const Roles: React.FC = () => {
       }
     },
     {
-      name: 'Accountant',
+      name: 'Accounts Executive',
       description: 'Handles payment reconciliation, GST invoices, vendor payouts, and refund processing.',
       usersCount: 2,
       permissions: {

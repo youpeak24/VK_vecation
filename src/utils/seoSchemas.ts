@@ -57,13 +57,17 @@ export function buildPackageSchema(pkg: any, path: string) {
         "telephone": "+91-9384957775"
       }
     },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": (pkg.rating || 4.9).toString(),
-      "reviewCount": (pkg.reviewsCount || pkg.reviewCount || 120).toString(),
-      "bestRating": "5",
-      "worstRating": "1"
-    },
+    ...((pkg.rating && (pkg.reviewsCount || pkg.reviewCount))
+      ? {
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": pkg.rating.toString(),
+            "reviewCount": (pkg.reviewsCount || pkg.reviewCount).toString(),
+            "bestRating": "5",
+            "worstRating": "1"
+          }
+        }
+      : {}),
     "provider": {
       "@type": "TravelAgency",
       "name": "VK Vacations",
@@ -101,12 +105,16 @@ export function buildTempleTourSchema(tour: any, path: string) {
         "telephone": "+91-9384957775"
       }
     },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": (tour.rating || 4.9).toString(),
-      "reviewCount": (tour.reviewsCount || 95).toString(),
-      "bestRating": "5"
-    },
+    ...((tour.rating && tour.reviewsCount)
+      ? {
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": tour.rating.toString(),
+            "reviewCount": tour.reviewsCount.toString(),
+            "bestRating": "5"
+          }
+        }
+      : {}),
     "provider": {
       "@type": "TravelAgency",
       "name": "VK Vacations",

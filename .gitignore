@@ -22,3 +22,18 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Firebase local tooling
+firebase-debug.log*
+firestore-debug.log
+ui-debug.log
+.firebase/
+
+# Service-account keys (secrets)
+*-adminsdk-*.json
+serviceAccount*.json
+
+# Secrets: never commit real environment files
+.env
+.env.*
+!.env.example

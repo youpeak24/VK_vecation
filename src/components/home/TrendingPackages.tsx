@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Sparkles, ArrowRight } from 'lucide-react';
-import { TOUR_PACKAGES } from '../../data/packages';
 import { PackageCard } from '../packages/PackageCard';
+import { usePackages } from '../../hooks/useContent';
 
 export const TrendingPackages: React.FC = () => {
+  const allPackages = usePackages();
   const [activeFilter, setActiveFilter] = useState<'All' | 'Domestic' | 'International' | 'Honeymoon' | 'Family' | 'Luxury'>('All');
 
-  const filteredPackages = TOUR_PACKAGES.filter((pkg) => {
+  const filteredPackages = allPackages.filter((pkg) => {
     if (activeFilter === 'All') return true;
     if (activeFilter === 'Domestic') return !pkg.isInternational;
     if (activeFilter === 'International') return pkg.isInternational;

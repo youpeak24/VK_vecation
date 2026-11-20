@@ -1,39 +1,41 @@
-import { TOUR_PACKAGES } from '../data/packages';
+import { stores } from '../lib/firebase/stores';
 import { TourPackage, PackageCategory } from '../types';
+
+const livePackages = (): TourPackage[] => stores.packages.snapshot().filter((p) => p.isActive !== false);
 
 export const packageService = {
   getAllPackages(): TourPackage[] {
-    return TOUR_PACKAGES;
+    return livePackages();
   },
 
   getPackageBySlug(slug: string): TourPackage | undefined {
-    return TOUR_PACKAGES.find(p => p.slug === slug);
+    return livePackages().find(p => p.slug === slug);
   },
 
   getRelatedPackages(currentSlug: string, limit = 3): TourPackage[] {
     const current = this.getPackageBySlug(currentSlug);
-    if (!current) return TOUR_PACKAGES.slice(0, limit);
+    if (!current) return livePackages().slice(0, limit);
 
-    return TOUR_PACKAGES
+    return livePackages()
       .filter(p => p.slug !== currentSlug)
       .filter(p => p.isInternational === current.isInternational || p.destination === current.destination)
       .slice(0, limit);
   },
 
   getPackagesByCategory(category: PackageCategory): TourPackage[] {
-    return TOUR_PACKAGES.filter(p => p.category.includes(category));
+    return livePackages().filter(p => p.category.includes(category));
   },
 
   getIndiaPackages(): TourPackage[] {
-    return TOUR_PACKAGES.filter(p => !p.isInternational);
+    return livePackages().filter(p => !p.isInternational);
   },
 
   getInternationalPackages(): TourPackage[] {
-    return TOUR_PACKAGES.filter(p => p.isInternational);
+    return livePackages().filter(p => p.isInternational);
   },
 
   getHoneymoonPackages(): TourPackage[] {
-    return TOUR_PACKAGES.filter(p => p.category.includes('Honeymoon'));
+    return livePackages().filter(p => p.category.includes('Honeymoon'));
   },
 
   searchPackages(query: {
@@ -43,7 +45,7 @@ export const packageService = {
     durationDays?: number;
     region?: string;
   }): TourPackage[] {
-    return TOUR_PACKAGES.filter(p => {
+    return livePackages().filter(p => {
       if (query.destination && query.destination.trim() !== '') {
         const dest = query.destination.toLowerCase();
         const matchesDest = p.destination.toLowerCase().includes(dest) ||

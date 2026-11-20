@@ -1,20 +1,22 @@
-import { DESTINATIONS } from '../data/destinations';
+import { stores } from '../lib/firebase/stores';
 import { Destination } from '../types';
+
+const liveDestinations = (): Destination[] => stores.destinations.snapshot().filter((d) => d.isActive !== false);
 
 export const destinationService = {
   getAllDestinations(): Destination[] {
-    return DESTINATIONS;
+    return liveDestinations();
   },
 
   getDestinationBySlug(slug: string): Destination | undefined {
-    return DESTINATIONS.find(d => d.slug === slug);
+    return liveDestinations().find(d => d.slug === slug);
   },
 
   getInternationalDestinations(): Destination[] {
-    return DESTINATIONS.filter(d => d.isInternational);
+    return liveDestinations().filter(d => d.isInternational);
   },
 
   getDomesticDestinations(): Destination[] {
-    return DESTINATIONS.filter(d => !d.isInternational);
+    return liveDestinations().filter(d => !d.isInternational);
   }
 };

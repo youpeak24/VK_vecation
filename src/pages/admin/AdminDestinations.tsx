@@ -1,13 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, Compass, MapPin, Eye, Star } from 'lucide-react';
+import { MapPin, Eye, Star, Pencil } from 'lucide-react';
 import { api } from '../../services/api';
 import { Destination } from '../../types';
 import { DataTable, Column } from '../../components/admin/DataTable';
+import { EditDestinationModal } from '../../components/admin/EditDestinationModal';
 import { formatCurrency } from '../../utils/formatters';
 
 export const AdminDestinations: React.FC = () => {
   const [destinations, setDestinations] = useState<Destination[]>([]);
+  const [editing, setEditing] = useState<Destination | null>(null);
+
+  // Real figures from the live package catalogue (not stored guesses).
+  const packagesFor = (d: Destination) =>
+    api.packages
+      .getAll()
+      .filter((p) => p.isActive !== false && (p.destination || '').toLowerCase() === d.name.toLowerCase());
+  const startingPriceFor = (d: Destination): number | undefined => {
+    const prices = packagesFor(d).map((p) => p.startingPrice).filter((n) => n > 0);
+    return prices.length ? Math.min(...prices) : d.startingPrice || undefined;
+  };
 
   const loadDestinations = () => {
     setDestinations(api.destinations.getAll());
@@ -59,7 +71,7 @@ export const AdminDestinations: React.FC = () => {
       sortable: true,
       render: (d) => (
         <span className="font-heading font-bold text-xs text-emerald-700">
-          {formatCurrency(d.startingPrice || 24500)}
+          {startingPriceFor(d) ? formatCurrency(startingPriceFor(d)!) : '—'}
         </span>
       )
     },
@@ -69,7 +81,7 @@ export const AdminDestinations: React.FC = () => {
       sortable: true,
       render: (d) => (
         <span className="text-xs font-semibold text-slate-700">
-          {d.packagesCount ?? d.packageCount ?? 4} Packages
+          {packagesFor(d).length} {packagesFor(d).length === 1 ? 'Package' : 'Packages'}
         </span>
       )
     },
@@ -92,16 +104,26 @@ export const AdminDestinations: React.FC = () => {
     },
     {
       key: 'actions',
-      header: 'Preview',
+      header: 'Actions',
       render: (d) => (
-        <Link
-          to={`/destinations/${d.slug}`}
-          target="_blank"
-          className="p-1.5 text-slate-500 hover:text-[#0866D9] hover:bg-blue-50 rounded-lg transition-colors inline-block"
-          title="Preview Destination Guide"
-        >
-          <Eye size={15} />
-        </Link>
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={() => setEditing(d)}
+            className="p-1.5 text-slate-500 hover:text-[#0866D9] hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
+            title="Edit Destination"
+          >
+            <Pencil size={15} />
+          </button>
+          <Link
+            to={`/destinations/${d.slug}`}
+            target="_blank"
+            className="p-1.5 text-slate-500 hover:text-[#0866D9] hover:bg-blue-50 rounded-lg transition-colors inline-block"
+            title="Preview Destination Guide"
+          >
+            <Eye size={15} />
+          </Link>
+        </div>
       )
     }
   ];
@@ -125,6 +147,17 @@ export const AdminDestinations: React.FC = () => {
         searchPlaceholder="Search destination or country..."
         searchKey={(d) => `${d.name} ${d.country} ${d.region}`}
       />
+
+      {editing && (
+        <EditDestinationModal
+          destination={editing}
+          onClose={() => setEditing(null)}
+          onSave={(changes) => {
+            api.destinations.update(editing.id, changes);
+            setEditing(null);
+          }}
+        />
+      )}
 
     </div>
   );

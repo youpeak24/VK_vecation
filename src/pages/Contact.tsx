@@ -47,18 +47,12 @@ export const Contact: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      // Re-use robust inquiry submission pipeline
-      await inquiryService.submitInquiry({
-        fullName: formData.name,
-        city: 'Online Contact Inquiry',
+      await inquiryService.submitContactMessage({
+        name: formData.name,
         email: formData.email,
         phone: formData.phone,
-        destination: formData.subject,
-        travelDate: 'Flexible',
-        travelers: 2,
-        vacationType: 'Customized Package',
-        specialRequirements: formData.message,
-        consent: true
+        subject: formData.subject,
+        message: formData.message
       });
       setIsSuccess(true);
       setFormData({ name: '', email: '', phone: '', subject: 'General Inquiry', message: '', honeypot: '' });

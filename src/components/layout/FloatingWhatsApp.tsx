@@ -15,7 +15,7 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({
   const waUrl = generateWhatsAppLink(COMPANY.whatsappNumber, customMessage);
 
   return (
-    <div className="fixed bottom-6 right-6 z-40 flex items-end gap-3 group">
+    <div className="fixed bottom-24 right-6 z-30 flex items-end gap-3 group">
       {/* Tooltip bubble */}
       {showTooltip && (
         <div className="hidden sm:flex items-center gap-2 bg-white text-[#142238] px-4 py-2.5 rounded-2xl shadow-xl border border-slate-200/80 animate-in fade-in slide-in-from-right-4 duration-300">

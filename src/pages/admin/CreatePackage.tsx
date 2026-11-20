@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Plus, Image as ImageIcon, Sparkles, CheckCircle2 } from 'lucide-react';
 import { api } from '../../services/api';
+import { ImageField } from '../../components/admin/ImageField';
 import { TourPackage } from '../../types';
 
 export const CreatePackage: React.FC = () => {
@@ -68,8 +69,6 @@ export const CreatePackage: React.FC = () => {
           highlights: ['Guided City Tour', 'Scenic Viewpoints']
         }
       ],
-      rating: 4.9,
-      reviewsCount: 18,
       isFeatured: true,
       isTrending: true
     } as any);
@@ -233,19 +232,7 @@ export const CreatePackage: React.FC = () => {
           </div>
 
           {/* Featured Image */}
-          <div>
-            <label className="block font-heading font-bold text-slate-700 mb-1">Featured Photography URL</label>
-            <div className="flex gap-2">
-              <input
-                type="url"
-                required
-                value={featuredImage}
-                onChange={(e) => setFeaturedImage(e.target.value)}
-                className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#0866D9]/20"
-              />
-              <img src={featuredImage} alt="Preview" className="w-11 h-11 rounded-xl object-cover border border-slate-200 shrink-0" />
-            </div>
-          </div>
+          <ImageField label="Featured Photography" value={featuredImage} onChange={setFeaturedImage} required />
 
           {/* Overview */}
           <div>

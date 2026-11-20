@@ -16,7 +16,7 @@ export const TempleTours: React.FC = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     const loadPackages = () => {
-      setTemplePackages(api.templePackages.getAll());
+      setTemplePackages(api.templePackages.getAll().filter((p) => p.isActive !== false));
     };
     loadPackages();
 

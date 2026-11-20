@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Sparkles, Plus } from 'lucide-react';
 import { api } from '../../services/api';
+import { ImageField } from '../../components/admin/ImageField';
 
 export const CreateTemplePackage: React.FC = () => {
   const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
+  const isEdit = Boolean(id);
+  const existing = id ? api.templePackages.getById(id) : undefined;
+  const hydrated = useRef(false);
 
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
@@ -22,14 +27,57 @@ export const CreateTemplePackage: React.FC = () => {
   const [darshanTypes, setDarshanTypes] = useState('VIP Special Entry Darshan, Morning Viswaroopa Seva, Special Archana & Prasadam');
   const [highlights, setHighlights] = useState('Special VIP Darshan tickets, Pure Satvik vegetarian meals, AC Chauffeur vehicle, Experienced devotional guide');
 
+  // Edit mode: fill the form once the record is available (it may stream in from Firestore).
+  useEffect(() => {
+    if (!existing || hydrated.current) return;
+    hydrated.current = true;
+    setTitle(existing.title);
+    setSlug(existing.slug);
+    setSubtitle(existing.subtitle ?? '');
+    setDeity(existing.deity);
+    setPrimaryTemple(existing.primaryTemple ?? '');
+    setCircuit(existing.circuit);
+    setState(existing.state);
+    setStartingPrice(existing.startingPrice);
+    setDays(existing.duration?.days ?? 5);
+    setNights(existing.duration?.nights ?? 4);
+    setFeaturedImage(existing.featuredImage);
+    setOverview(existing.overview ?? '');
+    setTemplesCovered((existing.templesCovered ?? []).join(', '));
+    setDarshanTypes((existing.darshanTypes ?? []).join(', '));
+    setHighlights((existing.highlights ?? []).join(', '));
+  }, [existing]);
+
   const handleTitleChange = (val: string) => {
     setTitle(val);
-    setSlug(val.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''));
+    if (!isEdit) setSlug(val.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!title || !primaryTemple || !startingPrice) return;
+
+    if (isEdit && id) {
+      // Only the fields on this form change; itinerary, inclusions etc. are preserved.
+      api.templePackages.update(id, {
+        title,
+        slug,
+        subtitle,
+        deity,
+        primaryTemple,
+        circuit,
+        state,
+        startingPrice: Number(startingPrice),
+        duration: { days: Number(days), nights: Number(nights) },
+        featuredImage,
+        overview,
+        templesCovered: templesCovered.split(',').map(t => t.trim()).filter(Boolean),
+        darshanTypes: darshanTypes.split(',').map(d => d.trim()).filter(Boolean),
+        highlights: highlights.split(',').map(h => h.trim()).filter(Boolean)
+      });
+      navigate('/admin/temple-packages');
+      return;
+    }
 
     api.templePackages.create({
       title,
@@ -84,13 +132,13 @@ export const CreateTemplePackage: React.FC = () => {
           <span>Back to Temple Tours</span>
         </Link>
         <span className="text-xs bg-amber-50 text-amber-700 px-3 py-1 rounded-full font-heading font-bold">
-          Sacred Circuit Creator
+          {isEdit ? 'Sacred Circuit Editor' : 'Sacred Circuit Creator'}
         </span>
       </div>
 
       <div className="bg-white rounded-3xl p-6 sm:p-8 border border-amber-100 shadow-sm">
         <h1 className="text-2xl font-heading font-black text-[#071B35] mb-1">
-          Add Temple Tour Pilgrimage
+          {isEdit ? 'Edit Temple Tour Pilgrimage' : 'Add Temple Tour Pilgrimage'}
         </h1>
         <p className="text-xs text-slate-400 mb-6">
           Publish a new South Indian pilgrimage package complete with temple lists, darshan passes, and satvik dining.
@@ -236,16 +284,7 @@ export const CreateTemplePackage: React.FC = () => {
             />
           </div>
 
-          <div>
-            <label className="block font-heading font-bold text-slate-700 mb-1">Featured Photo URL</label>
-            <input
-              type="url"
-              required
-              value={featuredImage}
-              onChange={(e) => setFeaturedImage(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200"
-            />
-          </div>
+          <ImageField label="Featured Photo" value={featuredImage} onChange={setFeaturedImage} required />
 
           <div>
             <label className="block font-heading font-bold text-slate-700 mb-1">Overview</label>
@@ -268,7 +307,7 @@ export const CreateTemplePackage: React.FC = () => {
               type="submit"
               className="px-6 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-heading font-bold uppercase tracking-wider transition-all shadow-md shadow-amber-600/25"
             >
-              Publish Sacred Tour
+              {isEdit ? 'Save Changes' : 'Publish Sacred Tour'}
             </button>
           </div>
 

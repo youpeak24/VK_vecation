@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, Trash2, Eye, Sparkles, MapPin } from 'lucide-react';
+import { Plus, Trash2, Eye, Pencil, Sparkles, MapPin } from 'lucide-react';
 import { api } from '../../services/api';
 import { TemplePackage } from '../../types';
 import { DataTable, Column } from '../../components/admin/DataTable';
@@ -101,6 +101,13 @@ export const TemplePackages: React.FC = () => {
             title="Preview Live Pilgrimage"
           >
             <Eye size={15} />
+          </Link>
+          <Link
+            to={`/admin/temple-packages/${p.id}/edit`}
+            className="p-1.5 text-slate-500 hover:text-[#0866D9] hover:bg-blue-50 rounded-lg transition-colors"
+            title="Edit Pilgrimage"
+          >
+            <Pencil size={15} />
           </Link>
           <button
             onClick={() => handleDelete(p.id, p.title)}

@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react';
 import { Globe2 } from 'lucide-react';
-import { TOUR_PACKAGES } from '../data/packages';
 import { PackageCard } from '../components/packages/PackageCard';
 import { SEOHead } from '../components/seo/SEOHead';
 import { buildBreadcrumbSchema } from '../utils/seoSchemas';
+import { usePackages } from '../hooks/useContent';
 
 export const InternationalTours: React.FC = () => {
+  const allPackages = usePackages();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const intlPackages = TOUR_PACKAGES.filter((p: any) => p.isInternational);
+  const intlPackages = allPackages.filter((p: any) => p.isInternational);
 
   return (
     <div className="pt-28 pb-24 bg-[#F8FAFC]">

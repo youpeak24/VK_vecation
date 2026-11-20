@@ -5,13 +5,14 @@ import {
   RotateCcw, 
   Compass
 } from 'lucide-react';
-import { TOUR_PACKAGES } from '../data/packages';
 import { PackageCard } from '../components/packages/PackageCard';
 import { SEOHead } from '../components/seo/SEOHead';
 import { buildBreadcrumbSchema } from '../utils/seoSchemas';
 import type { TourPackage } from '../types';
+import { usePackages } from '../hooks/useContent';
 
 export const Packages: React.FC = () => {
+  const allPackages = usePackages();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [searchTerm, setSearchTerm] = useState(searchParams.get('dest') || '');
@@ -35,7 +36,7 @@ export const Packages: React.FC = () => {
   ];
 
   // Filtering logic
-  const filtered = TOUR_PACKAGES.filter((pkg: TourPackage) => {
+  const filtered = allPackages.filter((pkg: TourPackage) => {
     // Search keyword
     if (searchTerm.trim() !== '') {
       const q = searchTerm.toLowerCase();

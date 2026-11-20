@@ -191,6 +191,64 @@ export const Settings: React.FC = () => {
           </div>
         </div>
 
+        {/* AI Travel Concierge (Groq Engine) */}
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-4 text-xs">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#0866D9] to-[#00B8A9] flex items-center justify-center text-white">
+                <span className="font-mono text-xs font-bold">AI</span>
+              </div>
+              <div>
+                <h3 className="font-heading font-bold text-base text-[#071B35]">VK AI Concierge & Chatbot Engine</h3>
+                <p className="text-[11px] text-slate-500">Live conversational intelligence powered by Groq LPU Ultra-Fast Inference</p>
+              </div>
+            </div>
+            <span className="px-3 py-1 rounded-full text-xs font-heading font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Groq API Active</span>
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label className="block font-heading font-bold text-slate-700 mb-1">Primary LLM Model</label>
+              <input
+                type="text"
+                disabled
+                value="openai/gpt-oss-120b"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 font-mono text-slate-700 font-bold"
+              />
+              <span className="text-[10px] text-slate-400 mt-1 block">Sub-second generation latency</span>
+            </div>
+
+            <div>
+              <label className="block font-heading font-bold text-slate-700 mb-1">Failover Secondary Model</label>
+              <input
+                type="text"
+                disabled
+                value="qwen/qwen3.8-27b"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 font-mono text-slate-700 font-bold"
+              />
+              <span className="text-[10px] text-slate-400 mt-1 block">Automatic failover standby</span>
+            </div>
+
+            <div>
+              <label className="block font-heading font-bold text-slate-700 mb-1">Groq API Key</label>
+              <input
+                type="text"
+                disabled
+                value={import.meta.env.VITE_GROQ_API_KEY ? '••••••••••••••••' : 'Not configured'}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 font-mono text-slate-700 font-bold"
+              />
+              <span className={`text-[10px] mt-1 block font-semibold ${import.meta.env.VITE_GROQ_API_KEY ? 'text-emerald-600' : 'text-amber-600'}`}>
+                {import.meta.env.VITE_GROQ_API_KEY
+                  ? 'Key is set in the environment (value hidden).'
+                  : 'Set VITE_GROQ_API_KEY in your environment to enable the AI chatbot.'}
+              </span>
+            </div>
+          </div>
+        </div>
+
         {/* Save Button */}
         <div className="flex justify-end">
           <button

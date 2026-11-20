@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, LayoutGrid, List, Phone, Mail, DollarSign, ArrowRight, ArrowLeft, CheckCircle2, X } from 'lucide-react';
 import { api } from '../../services/api';
+import { authService } from '../../services/auth';
 import { LeadRecord } from '../../types';
 import { formatCurrency } from '../../utils/formatters';
 import { DataTable, Column } from '../../components/admin/DataTable';
@@ -25,7 +26,7 @@ export const Leads: React.FC = () => {
   const [email, setEmail] = useState('');
   const [destination, setDestination] = useState('');
   const [estimatedValue, setEstimatedValue] = useState(150000);
-  const [assignedTo, setAssignedTo] = useState('Vignesh Kumar');
+  const [assignedTo, setAssignedTo] = useState(authService.getCurrentUser()?.name ?? '');
 
   const loadLeads = () => {
     setLeads(api.leads.getAll());
